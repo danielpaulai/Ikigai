@@ -9,11 +9,22 @@ import { isValidIkigaiResults } from '@/lib/validate-ikigai-results'
 
 export const maxDuration = 120
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
+let _anthropic: Anthropic | null = null
+function getAnthropicClient(): Anthropic {
+  if (!_anthropic) {
+    _anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+  }
+  return _anthropic
+}
 
 export async function POST(req: NextRequest) {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json(
+      { error: 'Server misconfigured', message: 'Anthropic API key is not set.' },
+      { status: 500 }
+    )
+  }
+
   if (await isRateLimited(req, 'generate')) {
     return NextResponse.json(
       { error: 'Too many requests', message: 'High traffic — try again in a few seconds.' },
@@ -41,6 +52,7 @@ export async function POST(req: NextRequest) {
 
     const resultsPrompt = getResultsGenerationPrompt(mode)
 
+    const anthropic = getAnthropicClient()
     const response = await createMessageWithRetry(
       anthropic,
       {

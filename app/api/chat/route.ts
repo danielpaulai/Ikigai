@@ -7,15 +7,26 @@ import { getCoachSystemPrompt } from '@/lib/prompts'
 
 export const maxDuration = 60
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
+let _anthropic: Anthropic | null = null
+function getAnthropicClient(): Anthropic {
+  if (!_anthropic) {
+    _anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+  }
+  return _anthropic
+}
 
 /**
  * NDJSON stream: lines of {"d":"token"} … then {"done":true}.
  * On failure mid-stream: {"error":"…"} then {"done":true}.
  */
 export async function POST(req: NextRequest) {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json(
+      { error: 'Server misconfigured', message: 'Anthropic API key is not set.' },
+      { status: 500 }
+    )
+  }
+
   if (await isRateLimited(req, 'chat')) {
     return NextResponse.json(
       {
@@ -39,6 +50,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON', message: 'Could not read request.' }, { status: 400 })
   }
 
+  const anthropic = getAnthropicClient()
   const encoder = new TextEncoder()
 
   const readable = new ReadableStream<Uint8Array>({
