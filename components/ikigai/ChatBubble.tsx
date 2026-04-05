@@ -18,10 +18,10 @@ export default function ChatBubble({ role, content }: ChatBubbleProps) {
       className={`flex max-w-[78%] animate-fade-in ${isUser ? 'ml-auto' : ''}`}
     >
       <div
-        className={`px-5 py-3.5 text-[15px] leading-relaxed rounded-3xl ${
+        className={`px-5 py-3.5 text-[15px] leading-[1.65] rounded-3xl whitespace-pre-wrap ${
           isUser
-            ? 'rounded-tr-sm bg-brand-plum text-brand-pink'
-            : 'rounded-tl-sm bg-white/80 border border-brand-pink/15 text-brand-plum shadow-sm'
+            ? 'rounded-tr-sm bg-brand-plum text-brand-pink/90'
+            : 'rounded-tl-sm bg-white border border-brand-pink/10 text-brand-plum/85 shadow-sm'
         }`}
       >
         {content}

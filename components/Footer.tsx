@@ -3,123 +3,90 @@
 import { Linkedin, Instagram, Youtube } from 'lucide-react'
 
 export default function Footer() {
-  const scrollTo = (id: string) => {
-    if (typeof document === 'undefined') return
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
-    <footer className="relative z-10 bg-[#050505] border-t border-brand-pink/10 text-white">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+    <footer className="bg-brand-plum text-white/80">
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8 mb-10">
+          {/* Branding */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-brand-daniel flex items-center justify-center">
-                <span className="text-white font-bold text-sm font-serif">DP</span>
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-7 h-7 rounded-full bg-brand-pink flex items-center justify-center">
+                <span className="text-brand-plum font-serif font-bold text-[10px] italic">DP</span>
               </div>
-              <span className="text-lg font-serif italic">Daniel Paul</span>
+              <span className="text-sm font-serif italic text-white">Daniel Paul</span>
             </div>
-            <p className="text-brand-pink/60 text-sm leading-relaxed mb-6">
+            <p className="text-white/40 text-xs leading-relaxed mb-4">
               Personal branding and AI systems for founders.
             </p>
-            <p className="text-white/35 text-xs">© {new Date().getFullYear()} Purely Personal. All rights reserved.</p>
+            <p className="text-white/25 text-[11px]">© {new Date().getFullYear()} Purely Personal</p>
           </div>
 
+          {/* Links */}
           <div>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4 font-semibold">Explore</p>
-            <ul className="space-y-3 text-sm text-white/55">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-3 font-semibold">Explore</p>
+            <ul className="space-y-2 text-xs">
               <li>
-                <button type="button" onClick={() => scrollTo('vision')} className="hover:text-brand-pink transition-colors text-left">
-                  What is Ikigai
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => scrollTo('how')} className="hover:text-brand-pink transition-colors text-left">
-                  How it Works
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => scrollTo('action')} className="hover:text-brand-pink transition-colors text-left">
+                <a href="#action" className="text-white/50 hover:text-brand-pink transition-colors">
                   Find Your Ikigai
-                </button>
+                </a>
               </li>
               <li>
                 <a
                   href="https://newsletter.purelypersonal.ai"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-brand-pink transition-colors"
+                  className="text-white/50 hover:text-brand-pink transition-colors"
                 >
-                  Subscribe to Newsletter
+                  Newsletter
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://danielpaul.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/50 hover:text-brand-pink transition-colors"
+                >
+                  danielpaul.ai
                 </a>
               </li>
             </ul>
           </div>
 
+          {/* Connect */}
           <div>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4 font-semibold">Connect</p>
-            <div className="flex gap-3 mb-6">
-              <a
-                href="https://www.linkedin.com/in/danielpaulai/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:bg-brand-daniel hover:text-white transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={18} />
-              </a>
-              <a
-                href="https://www.instagram.com/danielpaul.ai/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:bg-brand-daniel hover:text-white transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={18} />
-              </a>
-              <a
-                href="https://www.youtube.com/@purelypersonalpod"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:bg-brand-daniel hover:text-white transition-colors"
-                aria-label="YouTube"
-              >
-                <Youtube size={18} />
-              </a>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-3 font-semibold">Connect</p>
+            <div className="flex gap-2 mb-4">
+              {[
+                { icon: Linkedin, href: 'https://www.linkedin.com/in/danielpaulai/', label: 'LinkedIn' },
+                { icon: Instagram, href: 'https://www.instagram.com/danielpaul.ai/', label: 'Instagram' },
+                { icon: Youtube, href: 'https://www.youtube.com/@purelypersonalpod', label: 'YouTube' },
+              ].map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-lg bg-white/8 flex items-center justify-center text-white/40 hover:bg-brand-pink/20 hover:text-brand-pink transition-colors"
+                  aria-label={label}
+                >
+                  <Icon size={14} />
+                </a>
+              ))}
             </div>
-            <p className="text-white/45 text-xs leading-relaxed mb-4">
-              Follow Daniel Paul on LinkedIn for daily AI and personal branding insights.
-            </p>
             <a
               href="https://www.linkedin.com/in/danielpaulai/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand-daniel hover:text-brand-pink text-sm font-medium inline-flex items-center gap-2"
+              className="text-brand-pink/70 hover:text-brand-pink text-xs inline-flex items-center gap-1.5"
             >
-              <Linkedin size={16} />
-              linkedin.com/in/danielpaulai
-            </a>
-            <a
-              href="https://newsletter.purelypersonal.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-white/50 hover:text-white text-sm mt-3"
-            >
-              newsletter.purelypersonal.ai
-            </a>
-            <a
-              href="https://danielpaul.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-white/40 hover:text-brand-pink text-xs mt-4"
-            >
-              danielpaul.ai
+              <Linkedin size={12} /> linkedin.com/in/danielpaulai
             </a>
           </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-white/10 text-center text-white/35 text-xs leading-relaxed">
-          Built with care by Daniel Paul ·{' '}
+        <div className="pt-6 border-t border-white/8 text-center text-white/25 text-[11px]">
+          Built by Daniel Paul ·{' '}
           <a href="https://danielpaul.ai" className="hover:text-brand-pink transition-colors">
             danielpaul.ai
           </a>{' '}
