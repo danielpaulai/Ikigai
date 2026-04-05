@@ -9,12 +9,8 @@ import { isValidIkigaiResults } from '@/lib/validate-ikigai-results'
 
 export const maxDuration = 120
 
-let _anthropic: Anthropic | null = null
 function getAnthropicClient(): Anthropic {
-  if (!_anthropic) {
-    _anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
-  }
-  return _anthropic
+  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 }
 
 export async function POST(req: NextRequest) {

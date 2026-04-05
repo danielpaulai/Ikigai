@@ -7,12 +7,8 @@ import { getCoachSystemPrompt } from '@/lib/prompts'
 
 export const maxDuration = 60
 
-let _anthropic: Anthropic | null = null
 function getAnthropicClient(): Anthropic {
-  if (!_anthropic) {
-    _anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
-  }
-  return _anthropic
+  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 }
 
 /**
@@ -84,7 +80,16 @@ export async function POST(req: NextRequest) {
         push({ done: true })
       } catch (err) {
         console.error('Chat stream error:', err)
-        const msg = err instanceof Error ? err.message : 'Stream failed'
+        let msg = 'Stream failed'
+        if (err instanceof Anthropic.APIConnectionError) {
+          msg = 'Could not connect to AI service. Please try again.'
+        } else if (err instanceof Anthropic.AuthenticationError) {
+          msg = 'AI service authentication failed. Contact support.'
+        } else if (err instanceof Anthropic.RateLimitError) {
+          msg = 'AI service is busy. Please wait a moment and try again.'
+        } else if (err instanceof Error) {
+          msg = err.message
+        }
         push({ error: msg })
         push({ done: true })
       } finally {
