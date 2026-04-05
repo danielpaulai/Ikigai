@@ -1,7 +1,7 @@
 'use client'
 
-import { useCallback } from 'react'
-import { FileDown } from 'lucide-react'
+import { useCallback, useState } from 'react'
+import { Copy, FileDown, Link2 } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
 import type { IkigaiResults } from '@/lib/types'
 
@@ -11,11 +11,52 @@ interface ResultsViewProps {
 
 export default function ResultsView({ onReset }: ResultsViewProps) {
   const results = useSessionStore((s) => s.results)
+  const [linkState, setLinkState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [shareUrl, setShareUrl] = useState<string | null>(null)
+  const [linkError, setLinkError] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
 
   const handleDownload = useCallback(async () => {
     if (!results) return
     const { downloadIkigaiPDF } = await import('./IkigaiPDF')
     await downloadIkigaiPDF(results)
+  }, [results])
+
+  const handleShareableLink = useCallback(async () => {
+    if (!results) return
+    setLinkState('loading')
+    setLinkError(null)
+    setShareUrl(null)
+    try {
+      const { getIkigaiPdfBlob } = await import('./IkigaiPDF')
+      const blob = await getIkigaiPdfBlob(results)
+      const form = new FormData()
+      form.append('file', new File([blob], 'my-ikigai-report-danielpaul.pdf', { type: 'application/pdf' }))
+
+      const res = await fetch('/api/storage/upload', {
+        method: 'POST',
+        body: form,
+      })
+      const data = (await res.json()) as { url?: string; error?: string }
+      if (!res.ok) {
+        throw new Error(data.error || 'Upload failed')
+      }
+      if (!data.url) {
+        throw new Error('No URL returned')
+      }
+      setShareUrl(data.url)
+      setLinkState('success')
+      try {
+        await navigator.clipboard.writeText(data.url)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2500)
+      } catch {
+        /* clipboard optional */
+      }
+    } catch (e) {
+      setLinkState('error')
+      setLinkError(e instanceof Error ? e.message : 'Something went wrong')
+    }
   }, [results])
 
   if (!results) {
@@ -124,19 +165,60 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
           {r.closingMessage}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-          <button
-            type="button"
-            onClick={() => void handleDownload()}
-            className="inline-flex items-center justify-center gap-2 brand-gradient text-white font-semibold px-8 py-3.5 rounded-xl w-full sm:w-auto"
-          >
-            <FileDown size={18} />
-            Download My Ikigai Report
-          </button>
+        <div className="flex flex-col gap-4 justify-center items-stretch sm:items-center pt-4 max-w-lg mx-auto w-full">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+            <button
+              type="button"
+              onClick={() => void handleDownload()}
+              className="inline-flex items-center justify-center gap-2 brand-gradient text-white font-semibold px-8 py-3.5 rounded-xl w-full sm:w-auto"
+            >
+              <FileDown size={18} />
+              Download My Ikigai Report
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleShareableLink()}
+              disabled={linkState === 'loading'}
+              className="inline-flex items-center justify-center gap-2 border border-brand-red/50 bg-brand-charcoal text-white font-semibold px-8 py-3.5 rounded-xl w-full sm:w-auto hover:bg-brand-smoke/80 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <Link2 size={18} className={linkState === 'loading' ? 'animate-pulse' : ''} />
+              {linkState === 'loading' ? 'Uploading…' : 'Get shareable link'}
+            </button>
+          </div>
+
+          {linkState === 'success' && shareUrl && (
+            <div className="rounded-xl border border-brand-silver/20 bg-brand-dark/50 px-4 py-3 text-sm">
+              <p className="text-brand-silver mb-2">
+                {copied ? 'Link copied to clipboard.' : 'Your link (7-day access):'}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+                <code className="flex-1 text-xs text-white break-all bg-brand-smoke/50 px-3 py-2 rounded-lg border border-brand-silver/10">
+                  {shareUrl}
+                </code>
+                <button
+                  type="button"
+                  onClick={() => {
+                    void navigator.clipboard.writeText(shareUrl)
+                    setCopied(true)
+                    setTimeout(() => setCopied(false), 2000)
+                  }}
+                  className="inline-flex items-center justify-center gap-1.5 text-brand-red text-sm font-medium px-3 py-2 hover:text-white shrink-0"
+                >
+                  <Copy size={16} />
+                  Copy
+                </button>
+              </div>
+            </div>
+          )}
+
+          {linkState === 'error' && linkError && (
+            <p className="text-center text-sm text-red-400/90">{linkError}</p>
+          )}
+
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex items-center justify-center border border-brand-silver/40 text-white font-semibold px-8 py-3.5 rounded-xl w-full sm:w-auto hover:bg-white/5"
+            className="inline-flex items-center justify-center border border-brand-silver/40 text-white font-semibold px-8 py-3.5 rounded-xl w-full sm:w-auto hover:bg-white/5 mx-auto"
           >
             Start Again
           </button>

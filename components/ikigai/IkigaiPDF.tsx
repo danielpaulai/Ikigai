@@ -89,8 +89,12 @@ function IkigaiReportDocument({ results }: { results: IkigaiResults }) {
   )
 }
 
+export async function getIkigaiPdfBlob(results: IkigaiResults): Promise<Blob> {
+  return pdf(<IkigaiReportDocument results={results} />).toBlob()
+}
+
 export async function downloadIkigaiPDF(results: IkigaiResults) {
-  const blob = await pdf(<IkigaiReportDocument results={results} />).toBlob()
+  const blob = await getIkigaiPdfBlob(results)
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
