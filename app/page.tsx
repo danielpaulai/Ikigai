@@ -18,7 +18,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="relative min-h-screen flex flex-col selection:bg-brand-red selection:text-white">
+    <div className="relative min-h-screen flex flex-col overflow-x-hidden selection:bg-brand-pink selection:text-brand-plum bg-brand-cream">
       <Navbar />
       <main className="flex-grow">
         <Hero />

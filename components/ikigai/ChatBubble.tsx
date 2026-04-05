@@ -15,13 +15,13 @@ export default function ChatBubble({ role, content }: ChatBubbleProps) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
+      className={`flex max-w-[78%] animate-fade-in ${isUser ? 'ml-auto' : ''}`}
     >
       <div
-        className={`max-w-[78%] px-4 py-3 text-[15px] md:text-base leading-relaxed ${
+        className={`px-5 py-3.5 text-[15px] leading-relaxed rounded-3xl ${
           isUser
-            ? 'rounded-2xl rounded-tr-sm brand-gradient text-white'
-            : 'rounded-2xl rounded-tl-sm bg-brand-charcoal text-white border border-brand-silver/10'
+            ? 'rounded-tr-sm bg-brand-plum text-brand-pink'
+            : 'rounded-tl-sm bg-white/80 border border-brand-pink/15 text-brand-plum shadow-sm'
         }`}
       >
         {content}

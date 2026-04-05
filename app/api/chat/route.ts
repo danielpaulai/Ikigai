@@ -1,36 +1,94 @@
 import Anthropic from '@anthropic-ai/sdk'
+import type { MessageParam } from '@anthropic-ai/sdk/resources/messages'
 import { NextRequest, NextResponse } from 'next/server'
+import { ANTHROPIC_MODEL_CHAT } from '@/lib/anthropic-models'
+import { isRateLimited } from '@/lib/check-rate-limit'
 import { getCoachSystemPrompt } from '@/lib/prompts'
+
+export const maxDuration = 60
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
+/**
+ * NDJSON stream: lines of {"d":"token"} … then {"done":true}.
+ * On failure mid-stream: {"error":"…"} then {"done":true}.
+ */
 export async function POST(req: NextRequest) {
-  try {
-    const { messages, mode } = await req.json()
-
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5',
-      max_tokens: 300,
-      system: getCoachSystemPrompt(mode),
-      messages,
-    })
-
-    const text =
-      response.content[0].type === 'text'
-        ? response.content[0].text
-        : 'Thank you for sharing that. Let me ask you something else...'
-
-    return NextResponse.json({ message: text })
-  } catch (error) {
-    console.error('Chat API error:', error)
+  if (await isRateLimited(req, 'chat')) {
     return NextResponse.json(
       {
-        error: 'Failed to get response',
-        message: 'Something went wrong. Your answers are safe — please try again.',
+        error: 'Too many requests',
+        message: 'High traffic — try again in a few seconds.',
       },
-      { status: 500 }
+      { status: 429 }
     )
   }
+
+  let messages: MessageParam[]
+  let coachMode: 'short' | 'long' = 'short'
+  try {
+    const body = await req.json()
+    messages = body.messages
+    coachMode = body.mode === 'long' ? 'long' : 'short'
+    if (!Array.isArray(messages)) {
+      return NextResponse.json({ error: 'Invalid body', message: 'Missing messages.' }, { status: 400 })
+    }
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON', message: 'Could not read request.' }, { status: 400 })
+  }
+
+  const encoder = new TextEncoder()
+
+  const readable = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      const push = (obj: Record<string, unknown>) => {
+        controller.enqueue(encoder.encode(`${JSON.stringify(obj)}\n`))
+      }
+
+      let ms
+      try {
+        ms = anthropic.messages.stream({
+          model: ANTHROPIC_MODEL_CHAT,
+          max_tokens: 420,
+          system: getCoachSystemPrompt(coachMode),
+          messages: messages as MessageParam[],
+        })
+      } catch (err) {
+        console.error('Chat stream init error:', err)
+        const msg = err instanceof Error ? err.message : 'Failed to start response'
+        push({ error: msg })
+        push({ done: true })
+        controller.close()
+        return
+      }
+
+      try {
+        ms.on('text', (delta) => {
+          if (delta) push({ d: delta })
+        })
+        await ms.finalText()
+        push({ done: true })
+      } catch (err) {
+        console.error('Chat stream error:', err)
+        const msg = err instanceof Error ? err.message : 'Stream failed'
+        push({ error: msg })
+        push({ done: true })
+      } finally {
+        try {
+          controller.close()
+        } catch {
+          /* already closed */
+        }
+      }
+    },
+  })
+
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'application/x-ndjson; charset=utf-8',
+      'Cache-Control': 'no-store',
+    },
+  })
 }

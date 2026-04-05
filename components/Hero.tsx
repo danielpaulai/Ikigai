@@ -1,101 +1,86 @@
 'use client'
 
-import { motion } from 'framer-motion'
-
-const circles = [
-  { cx: 100, cy: 110, r: 85, fill: '#e90d41', delay: 0 },
-  { cx: 180, cy: 110, r: 85, fill: '#b8bec1', delay: 0.4 },
-  { cx: 140, cy: 60, r: 85, fill: '#ffffff', delay: 0.8 },
-  { cx: 140, cy: 160, r: 85, fill: '#e90d41', delay: 1.2 },
-]
+import { Lock, Mic, FileText } from 'lucide-react'
+import HeroIkigaiDiagram from '@/components/HeroIkigaiDiagram'
 
 export default function Hero() {
-  const scrollToAction = () => {
-    document.getElementById('action')?.scrollIntoView({ behavior: 'smooth' })
-  }
+  const goAction = () => document.getElementById('action')?.scrollIntoView({ behavior: 'smooth' })
+  const goCta = () => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })
 
   return (
-    <section className="relative min-h-screen hero-grid overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+    <section className="relative min-h-screen pt-28 md:pt-36 pb-20 overflow-hidden bg-brand-cream">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-[min(90vw,520px)] h-[min(90vw,520px)] rounded-full bg-brand-pink/15 blur-3xl" />
         <div
-          className="h-[min(80vw,520px)] w-[min(80vw,520px)] rounded-full bg-brand-red/15 blur-[100px]"
-          aria-hidden
+          className="absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(45,27,34,0.4) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(45,27,34,0.4) 1px, transparent 1px)`,
+            backgroundSize: '48px 48px',
+          }}
         />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-40 pb-20 md:pt-44 md:pb-28">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12 lg:gap-8">
-          <div className="flex-1 text-center lg:text-left">
-            <p className="text-brand-red text-xs font-semibold uppercase tracking-[0.2em] mb-4">By Daniel Paul</p>
-            <h1 className="font-display text-4xl md:text-6xl lg:text-[64px] font-extrabold text-white leading-tight tracking-tight">
-              Find Your Ikigai.
-            </h1>
-            <p className="font-display text-4xl md:text-6xl lg:text-[64px] font-extrabold brand-text-gradient leading-tight mt-1">
-              Your purpose. Your path. Your profit.
-            </p>
-            <p className="mt-6 text-brand-silver text-base md:text-lg leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-              Most people spend years feeling stuck between what they love and what pays the bills. Your Ikigai is the
-              intersection. This free tool finds it in minutes.
+      <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
+        <div className="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
+          <div className="text-center lg:text-left">
+            <p className="text-brand-pink-2 text-[11px] font-bold uppercase tracking-[0.35em] mb-6">
+              By Daniel Paul · Purely Personal
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button
-                type="button"
-                onClick={scrollToAction}
-                className="brand-gradient text-white font-semibold px-6 py-3.5 rounded-xl text-sm md:text-base hover:opacity-95 transition-opacity"
-              >
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-serif italic text-brand-plum leading-[1.05] mb-4">
+              Find Your Ikigai.
+            </h1>
+            <p className="text-2xl sm:text-3xl md:text-4xl font-serif italic text-brand-pink-2 leading-tight mb-8">
+              Your purpose. Your path. Your profit.
+            </p>
+
+            <p className="text-brand-plum/65 text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed mb-10">
+              Most people feel stuck between what they love and what pays. Your Ikigai is the intersection. This free tool
+              finds it in one focused session.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6">
+              <button type="button" onClick={goAction} className="btn-primary px-8 py-3.5 text-sm">
                 Start the Quick Session — 15 min
               </button>
               <button
                 type="button"
-                onClick={scrollToAction}
-                className="border border-brand-silver/40 text-white font-semibold px-6 py-3.5 rounded-xl text-sm md:text-base hover:border-brand-silver hover:bg-white/5 transition-colors"
+                onClick={goAction}
+                className="px-8 py-3.5 text-sm rounded-full border-2 border-brand-plum/20 text-brand-plum hover:bg-brand-pink/10 transition-colors font-medium"
               >
                 Take the Deep Dive — 45 min
               </button>
             </div>
 
-            <p className="mt-6 text-brand-silver/90 text-sm">Used by 1,000+ founders. No account needed.</p>
+            <p className="text-brand-plum/45 text-sm mb-8">Used by 1,000+ founders. No account needed.</p>
 
-            <div className="mt-6 flex flex-wrap gap-4 justify-center lg:justify-start text-brand-silver text-xs md:text-sm">
-              <span className="rounded-full bg-brand-charcoal/80 px-3 py-1 border border-brand-silver/10">🔒 Private</span>
-              <span className="rounded-full bg-brand-charcoal/80 px-3 py-1 border border-brand-silver/10">🎙 Voice Input</span>
-              <span className="rounded-full bg-brand-charcoal/80 px-3 py-1 border border-brand-silver/10">📄 PDF Report</span>
+            <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-brand-plum/50 text-xs font-medium uppercase tracking-wider">
+              <span className="inline-flex items-center gap-2">
+                <Lock size={14} className="text-brand-pink-2" strokeWidth={2} />
+                Private
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <Mic size={14} className="text-brand-pink-2" strokeWidth={2} />
+                Voice input
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <FileText size={14} className="text-brand-pink-2" strokeWidth={2} />
+                PDF report
+              </span>
             </div>
+
+            <button
+              type="button"
+              onClick={goCta}
+              className="mt-10 text-xs font-bold uppercase tracking-[0.25em] text-brand-plum/40 hover:text-brand-pink-2 transition-colors block mx-auto lg:mx-0"
+            >
+              Newsletter & weekly systems →
+            </button>
           </div>
 
-          <div className="flex-shrink-0 flex flex-col items-center mx-auto lg:mx-0">
-            <svg
-              viewBox="0 0 280 280"
-              className="w-[260px] h-[260px] md:w-[280px] md:h-[280px]"
-              aria-hidden
-            >
-              {circles.map((c, i) => (
-                <motion.circle
-                  key={i}
-                  cx={c.cx}
-                  cy={c.cy}
-                  r={c.r}
-                  fill={c.fill}
-                  fillOpacity={0.15}
-                  stroke={c.fill}
-                  strokeOpacity={0.6}
-                  strokeWidth={1.5}
-                  animate={{ scale: [1, 1.04, 1], opacity: [0.65, 1, 0.65] }}
-                  transition={{ duration: 3 + i * 0.25, repeat: Infinity, ease: 'easeInOut', delay: c.delay }}
-                />
-              ))}
-              <motion.circle
-                cx={140}
-                cy={115}
-                r={6}
-                fill="#e90d41"
-                animate={{ scale: [1, 1.2, 1], opacity: [0.85, 1, 0.85] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ filter: 'drop-shadow(0 0 12px rgba(233,13,65,0.8))' }}
-              />
-            </svg>
-            <p className="text-brand-silver text-sm italic mt-2">生き甲斐</p>
+          <div className="flex justify-center lg:justify-end pt-4">
+            <HeroIkigaiDiagram />
           </div>
         </div>
       </div>

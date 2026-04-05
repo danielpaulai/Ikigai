@@ -5,21 +5,21 @@ import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer
 import type { IkigaiResults } from '@/lib/types'
 
 const styles = StyleSheet.create({
-  page: { padding: 48, fontFamily: 'Helvetica', backgroundColor: '#FFFFFF' },
-  header: { marginBottom: 32, borderBottomWidth: 2, borderBottomColor: '#e90d41', paddingBottom: 16 },
-  title: { fontSize: 28, fontWeight: 'bold', color: '#0a0a0a', marginBottom: 4 },
-  subtitle: { fontSize: 12, color: '#8a8a7a' },
+  page: { padding: 48, fontFamily: 'Helvetica', backgroundColor: '#FFF9FA' },
+  header: { marginBottom: 32, borderBottomWidth: 2, borderBottomColor: '#FFB7C5', paddingBottom: 16 },
+  title: { fontSize: 28, fontWeight: 'bold', color: '#2D1B22', marginBottom: 4 },
+  subtitle: { fontSize: 12, color: 'rgba(45,27,34,0.5)' },
   section: { marginBottom: 24 },
-  label: { fontSize: 9, color: '#e90d41', textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 8 },
-  heading: { fontSize: 16, fontWeight: 'bold', color: '#0a0a0a', marginBottom: 8 },
-  body: { fontSize: 11, color: '#1a1a1a', lineHeight: 1.6, marginBottom: 8 },
+  label: { fontSize: 9, color: '#FF8DA1', textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 8 },
+  heading: { fontSize: 16, fontWeight: 'bold', color: '#2D1B22', marginBottom: 8 },
+  body: { fontSize: 11, color: '#2D1B22', lineHeight: 1.6, marginBottom: 8 },
   card: {
-    backgroundColor: '#f8f8f6',
+    backgroundColor: '#FFF5F7',
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
     borderLeftWidth: 3,
-    borderLeftColor: '#e90d41',
+    borderLeftColor: '#FFB7C5',
   },
   footer: {
     position: 'absolute',

@@ -1,43 +1,56 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx}',
+    './store/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
     extend: {
       colors: {
         brand: {
-          red: '#e90d41',
-          silver: '#b8bec1',
-          dark: '#0a0a0a',
-          charcoal: '#1a1a1a',
-          smoke: '#2a2a2a',
-          offwhite: '#f8f8f6',
-          white: '#ffffff',
+          cream: '#FFF9FA',
+          'cream-2': '#FFF5F7',
+          plum: '#2D1B22',
+          'plum-2': '#3D2B32',
+          pink: '#FFB7C5',
+          'pink-2': '#FF8DA1',
+          navy: '#2E2F53',
+          light: '#F8F6F8',
+          accent: '#E6DDE4',
+          daniel: '#e90d41',
         },
       },
       fontFamily: {
-        sans: ['var(--font-jakarta)', 'sans-serif'],
-        display: ['var(--font-rethink)', 'sans-serif'],
+        serif: ['var(--font-playfair)', 'Georgia', 'ui-serif', 'serif'],
+        sans: ['var(--font-roboto-flex)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       animation: {
-        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        breathe: 'breathe 3s ease-in-out infinite',
-        'fade-up': 'fadeUp 0.5s ease forwards',
-        glow: 'glow 2s ease-in-out infinite',
+        float: 'float 8s ease-in-out infinite',
+        'float-slow': 'float 12s ease-in-out infinite',
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'spin-slow': 'spin 60s linear infinite',
       },
       keyframes: {
-        breathe: {
-          '0%, 100%': { transform: 'scale(1)', opacity: '0.7' },
-          '50%': { transform: 'scale(1.06)', opacity: '1' },
+        float: {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+          '50%': { transform: 'translateY(-15px) rotate(2deg)' },
         },
-        fadeUp: {
-          '0%': { opacity: '0', transform: 'translateY(16px)' },
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        glow: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(233, 13, 65, 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(233, 13, 65, 0.6)' },
-        },
+      },
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
+        '6xl': '3rem',
+      },
+      backdropBlur: {
+        '2xl': '40px',
       },
     },
   },

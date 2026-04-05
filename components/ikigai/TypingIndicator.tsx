@@ -4,21 +4,16 @@ import { motion } from 'framer-motion'
 
 export default function TypingIndicator() {
   return (
-    <div className="flex justify-start">
-      <div className="rounded-2xl rounded-tl-sm bg-brand-charcoal border border-brand-silver/10 px-4 py-3 max-w-[78%]">
-        <div className="flex items-center gap-2 text-brand-silver text-sm">
-          <span className="flex gap-1">
-            {[0, 1, 2].map((i) => (
-              <motion.span
-                key={i}
-                className="inline-block h-1.5 w-1.5 rounded-full bg-brand-silver"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-              />
-            ))}
-          </span>
-          <span>Kai is thinking...</span>
-        </div>
+    <div className="flex max-w-[78%]">
+      <div className="px-5 py-3.5 bg-white/80 border border-brand-pink/15 rounded-3xl rounded-tl-sm shadow-sm flex gap-1 items-center">
+        {[0, 1, 2].map((i) => (
+          <motion.div
+            key={i}
+            className="w-1.5 h-1.5 rounded-full bg-brand-pink/70"
+            animate={{ opacity: [0.35, 1, 0.35] }}
+            transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.2 }}
+          />
+        ))}
       </div>
     </div>
   )
