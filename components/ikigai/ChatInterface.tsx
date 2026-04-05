@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
-import { QUESTION_LIMITS } from '@/lib/questions'
+import { QUESTION_LIMITS, SHORT_QUESTIONS, LONG_QUESTIONS } from '@/lib/questions'
 import { SESSION_MODES } from '@/lib/session-modes'
 import type { IkigaiResults, Message } from '@/lib/types'
 import { fetchJsonWithRetry } from '@/lib/fetch-with-retry'
@@ -41,6 +41,12 @@ export default function ChatInterface() {
   const limit = QUESTION_LIMITS[mode === 'long' ? 'long' : 'short']
   const progress = Math.min(userMessageCount / limit, 1)
   const modeMeta = mode ? SESSION_MODES[mode] : null
+
+  const questions = mode === 'long' ? LONG_QUESTIONS : SHORT_QUESTIONS
+  const currentCircleLabel =
+    userMessageCount < questions.length
+      ? questions[userMessageCount].circleLabel
+      : questions[questions.length - 1].circleLabel
 
   useEffect(() => {
     const el = scrollRef.current
@@ -203,11 +209,9 @@ export default function ChatInterface() {
               <span className="text-brand-plum font-medium text-sm font-serif italic block truncate">
                 Kai · Ikigai Coach
               </span>
-              {modeMeta && (
-                <span className="text-[10px] uppercase tracking-[0.12em] text-brand-plum/45 font-medium block truncate">
-                  {modeMeta.versionLabel} · {modeMeta.questionCount} answers · {modeMeta.durationLabel}
-                </span>
-              )}
+              <span className="text-[10px] uppercase tracking-[0.12em] text-brand-pink-2 font-semibold block truncate">
+                {currentCircleLabel}
+              </span>
             </div>
             <span className="text-brand-plum/40 text-xs shrink-0">
               {userMessageCount} of {limit}
