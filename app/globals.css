@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-red: #e90d41;
+  --brand-silver: #b8bec1;
+  --brand-dark: #0a0a0a;
+  --brand-charcoal: #1a1a1a;
+  --brand-smoke: #2a2a2a;
+  --brand-offwhite: #f8f8f6;
+
+  --circle-love: #e90d41;
+  --circle-skills: #b8bec1;
+  --circle-mission: #ffffff;
+  --circle-money: #e90d41;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--brand-dark);
+  color: white;
+  font-family: var(--font-jakarta), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--brand-red);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--brand-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brand-red);
+  border-radius: 2px;
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, var(--brand-red) 0%, #a00830 100%);
+}
+
+.brand-text-gradient {
+  background: linear-gradient(90deg, #e90d41 0%, #ff4d75 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-dark {
+  background-color: var(--brand-dark);
+}
+
+.section-charcoal {
+  background-color: var(--brand-charcoal);
+}
+
+.section-light {
+  background-color: var(--brand-offwhite);
+  color: var(--brand-dark);
+}
+
+.card-dark {
+  background-color: var(--brand-smoke);
+  border: 1px solid rgba(184, 190, 193, 0.12);
+  border-radius: 16px;
+}
+
+.card-red-border {
+  background-color: var(--brand-charcoal);
+  border: 1px solid rgba(233, 13, 65, 0.3);
+  border-radius: 16px;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0.92) 100%),
+    linear-gradient(90deg, rgba(184, 190, 193, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba(184, 190, 193, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+}
