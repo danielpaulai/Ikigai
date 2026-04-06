@@ -74,19 +74,19 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
     <div className="space-y-10">
       {/* Section Header */}
       <div className="text-center">
-        <div className="inline-flex items-center gap-2 bg-brand-plum text-brand-pink text-[10px] uppercase tracking-[0.2em] font-bold px-4 py-1.5 rounded-full mb-4">
-          <Bot size={12} />
+        <div className="inline-flex items-center gap-2 bg-brand-plum text-brand-pink text-[11px] uppercase tracking-[0.2em] font-bold px-5 py-2 rounded-full mb-4">
+          <Bot size={13} />
           Claude Skills Roadmap
         </div>
-        <p className="text-brand-plum/45 text-sm max-w-md mx-auto leading-relaxed">
-          Your Ikigai revealed your zone. Here is everything outside it — and the
-          Claude Skills to handle it.
+        <p className="text-brand-plum/50 text-base max-w-md mx-auto leading-relaxed">
+          Your Ikigai revealed your zone. Here is everything outside it and the
+          Claude Skills that handle it for you.
         </p>
       </div>
 
       {/* Task Categorizer */}
       <div>
-        <p className="text-brand-plum/35 text-[10px] uppercase tracking-[0.3em] text-center font-bold mb-5">
+        <p className="text-brand-plum/40 text-xs uppercase tracking-[0.25em] text-center font-bold mb-5">
           Your Handoff List
         </p>
         <div className="space-y-3">
@@ -112,8 +112,8 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
                       <div className="flex items-start gap-2.5">
                         <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${config.dot}`} />
                         <div className="flex-1 min-w-0">
-                          <p className="text-brand-plum text-sm font-medium">{t.task}</p>
-                          <p className="text-brand-plum/40 text-xs mt-0.5 leading-relaxed">{t.reason}</p>
+                          <p className="text-brand-plum text-base font-medium">{t.task}</p>
+                          <p className="text-brand-plum/45 text-sm mt-1 leading-relaxed">{t.reason}</p>
                           <div className="flex gap-2 mt-1.5">
                             <span className="inline-flex items-center gap-1 text-[9px] text-brand-plum/35">
                               <Clock size={9} /> {t.timeCost === 'high' ? 'High time' : 'Low time'}
@@ -136,7 +136,7 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
       {/* Priority Matrix */}
       {handoffTasks.length > 0 && (
         <div>
-          <p className="text-brand-plum/35 text-[10px] uppercase tracking-[0.3em] text-center font-bold mb-5">
+          <p className="text-brand-plum/40 text-xs uppercase tracking-[0.25em] text-center font-bold mb-5">
             Skills Priority Matrix
           </p>
           <SkillsPriorityMatrix tasks={handoffTasks} />
@@ -146,7 +146,7 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
       {/* Claude Skills Stack */}
       {sortedSkills.length > 0 && (
         <div>
-          <p className="text-brand-plum/35 text-[10px] uppercase tracking-[0.3em] text-center font-bold mb-5">
+          <p className="text-brand-plum/40 text-xs uppercase tracking-[0.25em] text-center font-bold mb-5">
             Your Claude Skills Stack
           </p>
           <div className="space-y-3">
@@ -194,29 +194,29 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
                         transition={{ duration: 0.25 }}
                         className="overflow-hidden"
                       >
-                        <div className="px-5 pb-5 space-y-4 border-t border-brand-pink/10 pt-4">
+                        <div className="px-5 pb-5 space-y-5 border-t border-brand-pink/10 pt-4">
                           {/* Meta row */}
                           <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-brand-cream-2 rounded-xl p-3">
-                              <p className="text-[9px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1">Who Uses It</p>
-                              <p className="text-brand-plum/70 text-xs">{skill.whoUsesIt}</p>
+                            <div className="bg-brand-cream-2 rounded-xl p-4">
+                              <p className="text-[10px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1.5">Who Uses It</p>
+                              <p className="text-brand-plum/70 text-sm">{skill.whoUsesIt}</p>
                             </div>
-                            <div className="bg-brand-cream-2 rounded-xl p-3">
-                              <p className="text-[9px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1">Time Saved</p>
-                              <p className="text-brand-plum/70 text-xs font-medium">{skill.timeSavedPerWeek}/week</p>
+                            <div className="bg-brand-cream-2 rounded-xl p-4">
+                              <p className="text-[10px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1.5">Time Saved</p>
+                              <p className="text-brand-plum/70 text-sm font-medium">{skill.timeSavedPerWeek}/week</p>
                             </div>
                           </div>
 
                           {/* Replaces */}
                           <div>
-                            <p className="text-[9px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1">Replaces</p>
-                            <p className="text-brand-plum/55 text-xs">{skill.originalTask}</p>
+                            <p className="text-[10px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1.5">Replaces</p>
+                            <p className="text-brand-plum/55 text-sm">{skill.originalTask}</p>
                           </div>
 
                           {/* What to Tell Claude */}
                           <div>
-                            <p className="text-[9px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1">What to Tell Claude</p>
-                            <p className="text-brand-plum/65 text-sm leading-relaxed italic">
+                            <p className="text-[10px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1.5">What to Tell Claude</p>
+                            <p className="text-brand-plum/65 text-base leading-relaxed italic">
                               &ldquo;{skill.whatToTellClaude}&rdquo;
                             </p>
                           </div>
@@ -224,7 +224,7 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
                           {/* Starter Prompt */}
                           <div>
                             <div className="flex items-center justify-between mb-2">
-                              <p className="text-[9px] uppercase tracking-widest text-brand-plum/30 font-bold">
+                              <p className="text-[10px] uppercase tracking-widest text-brand-plum/30 font-bold">
                                 Starter Prompt — Paste into Claude
                               </p>
                               <button
@@ -236,8 +236,8 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
                                 {copiedIndex === i ? 'Copied' : 'Copy'}
                               </button>
                             </div>
-                            <div className="bg-brand-plum rounded-xl p-4">
-                              <pre className="text-brand-pink/80 text-xs leading-relaxed whitespace-pre-wrap font-sans">
+                            <div className="bg-brand-plum rounded-xl p-5">
+                              <pre className="text-brand-pink/80 text-sm leading-relaxed whitespace-pre-wrap font-sans">
                                 {skill.starterPrompt}
                               </pre>
                             </div>
@@ -256,11 +256,11 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
       {/* Post-Session Prompt Template */}
       {postSessionPrompt && (
         <div>
-          <p className="text-brand-plum/35 text-[10px] uppercase tracking-[0.3em] text-center font-bold mb-3">
+          <p className="text-brand-plum/40 text-xs uppercase tracking-[0.25em] text-center font-bold mb-3">
             Take-Home Prompt
           </p>
-          <p className="text-brand-plum/40 text-xs text-center mb-4 max-w-sm mx-auto">
-            Paste this into Claude after the session. Speak it through Wispr Flow or type it — Claude builds your full Skills stack.
+          <p className="text-brand-plum/45 text-sm text-center mb-4 max-w-sm mx-auto">
+            Paste this into Claude after the session. Speak it through Wispr Flow or type it. Claude builds your full Skills stack.
           </p>
           <div className="relative bg-brand-plum rounded-2xl p-5">
             <button
@@ -277,7 +277,7 @@ export default function SkillsRoadmap({ roadmap }: SkillsRoadmapProps) {
                 Ready-to-Use Prompt
               </span>
             </div>
-            <p className="text-brand-pink/75 text-sm leading-relaxed">{postSessionPrompt}</p>
+            <p className="text-brand-pink/75 text-base leading-relaxed">{postSessionPrompt}</p>
           </div>
         </div>
       )}
