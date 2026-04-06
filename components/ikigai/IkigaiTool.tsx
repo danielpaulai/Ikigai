@@ -4,6 +4,7 @@ import {
   fetchChatWithRetry,
   readNdjsonChatStream,
 } from '@/lib/chat-stream-client'
+import { track } from '@/lib/track'
 import { useSessionStore } from '@/store/useSessionStore'
 import ModeSelector from './ModeSelector'
 import ChatInterface from './ChatInterface'
@@ -64,6 +65,9 @@ export default function IkigaiTool() {
     useSessionStore.getState().setMode(selectedMode)
     setToolView('chat')
 
+    const sid = useSessionStore.getState().sessionId
+    track('session_start', { sessionId: sid, mode: selectedMode })
+
     const fallback =
       'You showed up. First question: what activities make you lose track of time — where hours disappear?'
 
@@ -122,10 +126,14 @@ export default function IkigaiTool() {
   }
 
   const handleReset = () => {
+    const sid = useSessionStore.getState().sessionId
+    track('session_reset', { sessionId: sid })
     useSessionStore.getState().reset()
   }
 
   const handleResume = () => {
+    const sid = useSessionStore.getState().sessionId
+    track('session_resume', { sessionId: sid, mode })
     setToolView('chat')
   }
 

@@ -10,6 +10,7 @@ import {
   fetchChatWithRetry,
   readNdjsonChatStream,
 } from '@/lib/chat-stream-client'
+import { track } from '@/lib/track'
 import ChatBubble from './ChatBubble'
 import CircleTransitionCard from './CircleTransitionCard'
 import TypingIndicator from './TypingIndicator'
@@ -124,6 +125,24 @@ export default function ChatInterface() {
       }
       if (res.ok && data.results) {
         setResults(data.results as IkigaiResults)
+
+        const store = useSessionStore.getState()
+        const durationMs = store.sessionStartedAt ? Date.now() - store.sessionStartedAt : null
+        track('session_complete', {
+          sessionId: store.sessionId,
+          mode: mode ?? 'short',
+          messages: store.messages.map((m, idx) => {
+            const q = idx < questions.length ? questions[idx] : null
+            return {
+              role: m.role,
+              content: m.content,
+              circle: m.role === 'user' && q ? q.circle : undefined,
+              circleLabel: m.role === 'user' && q ? q.circleLabel : undefined,
+            }
+          }),
+          results: data.results,
+          durationMs,
+        })
       } else {
         const msg =
           typeof data.message === 'string'
@@ -153,6 +172,19 @@ export default function ChatInterface() {
     addMessage(userMsg)
 
     const updatedMessages = useSessionStore.getState().messages
+
+    // Track circle completions
+    const boundaries = computeCircleBoundaries(questions)
+    const boundary = boundaries.find((b) => b.afterUserMsg === nextCount)
+    if (boundary) {
+      const sid = useSessionStore.getState().sessionId
+      track('circle_complete', {
+        sessionId: sid,
+        circle: boundary.completedCircle,
+        circleIndex: boundary.completedIndex,
+        answersGiven: nextCount,
+      })
+    }
 
     if (nextCount >= limit) {
       const transitionMsg: Message = {
@@ -237,6 +269,8 @@ export default function ChatInterface() {
   }
 
   const handleSaveExit = () => {
+    const sid = useSessionStore.getState().sessionId
+    track('session_save', { sessionId: sid, answersGiven: userMessageCount })
     setShowSavedToast(true)
     setTimeout(() => {
       setShowSavedToast(false)

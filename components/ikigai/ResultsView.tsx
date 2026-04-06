@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Copy, FileDown, Link2, Star, Zap, Waves } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
+import { track } from '@/lib/track'
 import type { IkigaiResults } from '@/lib/types'
 import PersonalizedDiagram from './PersonalizedDiagram'
 import MomentumCards from './MomentumCards'
@@ -37,6 +38,8 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
     try {
       const { downloadIkigaiPDF } = await import('./IkigaiPDF')
       await downloadIkigaiPDF(results)
+      const sid = useSessionStore.getState().sessionId
+      track('pdf_download', { sessionId: sid })
     } catch (err) {
       console.error('PDF download error:', err)
       setDownloadError('Could not generate the PDF. Try again in a moment.')
@@ -63,6 +66,8 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
       if (!data.url) throw new Error('No URL returned')
       setShareUrl(data.url)
       setLinkState('success')
+      const sid = useSessionStore.getState().sessionId
+      track('share_link', { sessionId: sid })
       try {
         await navigator.clipboard.writeText(data.url)
         setCopied(true)

@@ -13,21 +13,30 @@ function clearAssistantStreamRaf() {
   }
 }
 
+function generateSessionId(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID()
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
+  })
+}
+
 interface SessionState {
+  sessionId: string
+  sessionStartedAt: number | null
   mode: Mode
   messages: Message[]
   userMessageCount: number
   results: IkigaiResults | null
-  /** Last generate failure (not persisted — cleared on success / reset). */
   generationError: string | null
   toolView: 'mode' | 'chat' | 'generating' | 'results'
   setMode: (mode: Mode) => void
   setToolView: (view: 'mode' | 'chat' | 'generating' | 'results') => void
   setGenerationError: (message: string | null) => void
   addMessage: (message: Message) => void
-  /** Append to the last assistant message (streaming tokens). */
   appendAssistantDelta: (delta: string) => void
-  /** Apply any buffered streaming text immediately (call when a stream ends or errors). */
   flushAssistantStreaming: () => void
   incrementUserCount: () => void
   setResults: (results: IkigaiResults) => void
@@ -37,13 +46,15 @@ interface SessionState {
 export const useSessionStore = create<SessionState>()(
   persist(
     (set) => ({
+      sessionId: generateSessionId(),
+      sessionStartedAt: null,
       mode: null,
       messages: [],
       userMessageCount: 0,
       results: null,
       generationError: null,
       toolView: 'mode',
-      setMode: (mode) => set({ mode }),
+      setMode: (mode) => set({ mode, sessionStartedAt: Date.now() }),
       setToolView: (view) => set({ toolView: view }),
       setGenerationError: (message) => set({ generationError: message }),
       addMessage: (message) =>
@@ -92,6 +103,8 @@ export const useSessionStore = create<SessionState>()(
         clearAssistantStreamRaf()
         assistantStreamBuffer = ''
         set({
+          sessionId: generateSessionId(),
+          sessionStartedAt: null,
           mode: null,
           messages: [],
           userMessageCount: 0,
@@ -104,6 +117,8 @@ export const useSessionStore = create<SessionState>()(
     {
       name: 'ikigai-session-dp',
       partialize: (state) => ({
+        sessionId: state.sessionId,
+        sessionStartedAt: state.sessionStartedAt,
         mode: state.mode,
         messages: state.messages,
         userMessageCount: state.userMessageCount,
