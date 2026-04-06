@@ -1,13 +1,23 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { Copy, FileDown, Link2 } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Copy, FileDown, Link2, Star } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
 import type { IkigaiResults } from '@/lib/types'
 import PersonalizedDiagram from './PersonalizedDiagram'
 
 interface ResultsViewProps {
   onReset: () => void
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay: i * 0.12, ease: 'easeOut' },
+  }),
 }
 
 export default function ResultsView({ onReset }: ResultsViewProps) {
@@ -87,7 +97,14 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
   return (
     <div className="overflow-y-auto max-h-[min(90vh,900px)]">
       <div className="p-8 md:p-10 space-y-12">
-        <section className="text-center">
+        {/* Section: Ikigai Statement + Diagram */}
+        <motion.section
+          className="text-center"
+          initial="hidden"
+          animate="visible"
+          custom={0}
+          variants={fadeUp}
+        >
           <div className="capsule-tag">Your Ikigai</div>
 
           {r.circleKeywords && (
@@ -103,119 +120,202 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
           <p className="font-serif italic text-brand-plum text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
             {r.ikigaiStatement}
           </p>
-        </section>
+        </motion.section>
 
-        <section className="bg-brand-plum rounded-4xl p-8 text-center">
+        {/* Section: Archetype */}
+        <motion.section
+          className="bg-brand-plum rounded-4xl p-8 text-center"
+          initial="hidden"
+          animate="visible"
+          custom={1}
+          variants={fadeUp}
+        >
           <p className="text-brand-pink/60 text-xs uppercase tracking-[0.3em] mb-3">Your Archetype</p>
           <h3 className="text-3xl font-serif italic text-white mb-2">{r.archetype.name}</h3>
           <p className="text-brand-pink font-medium mb-4">{r.archetype.tagline}</p>
           <p className="text-white/60 text-sm leading-relaxed max-w-lg mx-auto mb-6">{r.archetype.description}</p>
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-wrap gap-2 justify-center mb-4">
             {r.archetype.strengths.map((s) => (
-              <span key={s} className="px-3 py-1 rounded-full border border-brand-pink/30 bg-white/10 text-brand-pink text-xs">
+              <span key={s} className="px-3 py-1.5 rounded-full border border-brand-pink/30 bg-white/10 text-brand-pink text-xs font-medium">
                 {s}
               </span>
             ))}
           </div>
           {r.archetype.watchOut && (
-            <p className="text-white/40 text-xs italic mt-4">Growth edge: {r.archetype.watchOut}</p>
+            <div className="mt-4 mx-auto max-w-md bg-white/5 border border-white/10 rounded-2xl px-5 py-3">
+              <p className="text-white/30 text-[9px] uppercase tracking-widest font-bold mb-1">Growth Edge</p>
+              <p className="text-white/50 text-sm italic leading-relaxed">{r.archetype.watchOut}</p>
+            </div>
           )}
-        </section>
+        </motion.section>
 
-        <section>
-          <h4 className="text-brand-plum font-semibold mb-4 font-serif text-lg italic">Your four circles</h4>
+        {/* Section: Four Circles */}
+        <motion.section
+          initial="hidden"
+          animate="visible"
+          custom={2}
+          variants={fadeUp}
+        >
+          <h4 className="text-brand-plum font-semibold mb-5 font-serif text-lg italic text-center">Your Four Circles</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-5 rounded-3xl bg-white/60 border border-brand-pink/30">
-              <p className="text-brand-pink-2 text-[10px] uppercase tracking-widest mb-2 font-bold">What you love</p>
-              <p className="text-brand-plum text-sm leading-relaxed italic font-serif">{r.circleInsights.love}</p>
-            </div>
-            <div className="p-5 rounded-3xl bg-white/60 border border-brand-pink/20">
-              <p className="text-brand-plum/50 text-[10px] uppercase tracking-widest mb-2 font-bold">What you&apos;re good at</p>
-              <p className="text-brand-plum text-sm leading-relaxed italic font-serif">{r.circleInsights.skills}</p>
-            </div>
-            <div className="p-5 rounded-3xl bg-white/60 border border-brand-pink/25">
-              <p className="text-brand-plum/70 text-[10px] uppercase tracking-widest mb-2 font-bold">What the world needs</p>
-              <p className="text-brand-plum text-sm leading-relaxed italic font-serif">{r.circleInsights.mission}</p>
-            </div>
-            <div className="p-5 rounded-3xl bg-white/60 border border-brand-pink/15">
-              <p className="text-brand-pink-2 text-[10px] uppercase tracking-widest mb-2 font-bold">What you can be paid for</p>
-              <p className="text-brand-plum text-sm leading-relaxed italic font-serif">{r.circleInsights.profession}</p>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <p className="text-brand-plum/40 text-[10px] uppercase tracking-[0.3em] mb-4 text-center font-bold">How to Monetize Your Ikigai</p>
-          <div className="flex flex-col gap-4">
-            {r.monetizationStrategies.map((s, i) => (
-              <div key={i} className="bg-white/60 border border-brand-pink/15 rounded-3xl p-6">
-                <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <span className="text-2xl">{s.icon}</span>
-                  <h4 className="font-serif italic text-brand-plum text-lg flex-1 min-w-[120px]">{s.title}</h4>
-                  <div className="flex gap-2">
-                    <span className="text-[10px] bg-brand-pink/15 text-brand-pink-2 px-2 py-0.5 rounded-full font-medium">⏱ {s.timeToRevenue}</span>
-                    <span className="text-[10px] bg-brand-plum/10 text-brand-plum/70 px-2 py-0.5 rounded-full font-medium">{s.incomeRange}</span>
-                  </div>
+            {[
+              { key: 'love', label: 'What You Love', insight: r.circleInsights.love, kwKey: 'love' as const, borderColor: 'border-brand-pink/40', dotColor: 'bg-brand-pink-2' },
+              { key: 'skills', label: "What You're Good At", insight: r.circleInsights.skills, kwKey: 'skills' as const, borderColor: 'border-brand-plum/20', dotColor: 'bg-brand-plum/40' },
+              { key: 'mission', label: 'What the World Needs', insight: r.circleInsights.mission, kwKey: 'world' as const, borderColor: 'border-brand-pink/25', dotColor: 'bg-brand-plum/30' },
+              { key: 'profession', label: 'What You Can Be Paid For', insight: r.circleInsights.profession, kwKey: 'money' as const, borderColor: 'border-brand-pink-2/30', dotColor: 'bg-brand-pink-2' },
+            ].map((circle) => (
+              <div key={circle.key} className={`p-5 rounded-3xl bg-white/60 border ${circle.borderColor}`}>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className={`w-2 h-2 rounded-full ${circle.dotColor}`} />
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-brand-plum/50">
+                    {circle.label}
+                  </p>
                 </div>
-                <p className="text-brand-plum/60 text-sm leading-relaxed mb-2">{s.description}</p>
-                <p className="text-brand-pink-2 text-sm font-medium">First offer: {s.firstOffer}</p>
+                {r.circleKeywords && r.circleKeywords[circle.kwKey]?.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {r.circleKeywords[circle.kwKey].map((kw) => (
+                      <span key={kw} className="text-[10px] bg-brand-pink/10 text-brand-pink-2 px-2 py-0.5 rounded-full font-medium">
+                        {kw}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <p className="text-brand-plum/75 text-sm leading-relaxed">{circle.insight}</p>
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        <section className="border-l-4 border-brand-pink bg-brand-cream-2 rounded-r-3xl px-6 py-5">
+        {/* Section: Monetization */}
+        <motion.section
+          initial="hidden"
+          animate="visible"
+          custom={3}
+          variants={fadeUp}
+        >
+          <p className="text-brand-plum/40 text-[10px] uppercase tracking-[0.3em] mb-5 text-center font-bold">
+            How to Monetize Your Ikigai
+          </p>
+          <div className="flex flex-col gap-4">
+            {r.monetizationStrategies.map((s, i) => (
+              <div
+                key={i}
+                className={`relative border rounded-3xl p-6 ${
+                  i === 0
+                    ? 'bg-brand-plum/[0.03] border-brand-pink/30 shadow-[0_4px_20px_rgba(255,183,197,0.1)]'
+                    : 'bg-white/60 border-brand-pink/15'
+                }`}
+              >
+                {i === 0 && (
+                  <div className="absolute -top-3 left-6 flex items-center gap-1.5 bg-brand-pink-2 text-white text-[9px] uppercase tracking-wider font-bold px-3 py-1 rounded-full">
+                    <Star size={10} fill="currentColor" />
+                    Start Here
+                  </div>
+                )}
+                <div className="flex flex-wrap items-start gap-3 mb-3">
+                  <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-lg shrink-0 ${
+                    i === 0 ? 'bg-brand-pink/20' : 'bg-brand-plum/5'
+                  }`}>
+                    {s.icon}
+                  </div>
+                  <div className="flex-1 min-w-[140px]">
+                    <h4 className="font-serif italic text-brand-plum text-base leading-snug">{s.title}</h4>
+                    <div className="flex flex-wrap gap-2 mt-1.5">
+                      <span className="text-[10px] bg-brand-pink/12 text-brand-pink-2 px-2.5 py-0.5 rounded-full font-medium">
+                        {s.timeToRevenue}
+                      </span>
+                      <span className="text-[10px] bg-brand-plum/8 text-brand-plum/60 px-2.5 py-0.5 rounded-full font-medium">
+                        {s.incomeRange}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-brand-plum/55 text-sm leading-relaxed mb-3">{s.description}</p>
+                <div className={`rounded-2xl px-4 py-3 ${i === 0 ? 'bg-brand-pink/10' : 'bg-brand-cream-2'}`}>
+                  <p className="text-[9px] uppercase tracking-widest text-brand-plum/30 font-bold mb-1">First Offer</p>
+                  <p className="text-brand-plum/80 text-sm font-medium">{s.firstOffer}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Section: First Step */}
+        <motion.section
+          className="border-l-4 border-brand-pink bg-brand-cream-2 rounded-r-3xl px-6 py-5"
+          initial="hidden"
+          animate="visible"
+          custom={4}
+          variants={fadeUp}
+        >
           <p className="text-brand-pink-2 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">Your First Step This Week</p>
           <p className="font-serif italic text-brand-plum text-lg leading-relaxed">{r.ninetyDayStep}</p>
-        </section>
+        </motion.section>
 
-        <p className="font-serif italic text-brand-plum/60 text-center text-base leading-relaxed max-w-xl mx-auto">
+        {/* Section: Closing */}
+        <motion.p
+          className="font-serif italic text-brand-plum/55 text-center text-base leading-relaxed max-w-xl mx-auto"
+          initial="hidden"
+          animate="visible"
+          custom={5}
+          variants={fadeUp}
+        >
           {r.closingMessage}
-        </p>
+        </motion.p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
-          <button type="button" onClick={() => void handleDownload()} className="btn-primary">
-            <FileDown size={18} />
-            Download My Ikigai Report
-          </button>
-          <button
-            type="button"
-            onClick={() => void handleShareableLink()}
-            disabled={linkState === 'loading'}
-            className="btn-secondary disabled:opacity-50"
-          >
-            <Link2 size={18} className={linkState === 'loading' ? 'animate-pulse' : ''} />
-            {linkState === 'loading' ? 'Uploading…' : 'Get shareable link'}
-          </button>
-        </div>
-
-        {downloadError && <p className="text-center text-sm text-brand-pink-2">{downloadError}</p>}
-
-        {linkState === 'success' && shareUrl && (
-          <div className="rounded-xl border border-brand-pink/20 bg-brand-cream/80 px-4 py-3 text-sm">
-            <p className="text-brand-plum/60 mb-2">{copied ? 'Link copied to clipboard.' : 'Your link (7-day access):'}</p>
-            <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-              <code className="flex-1 text-xs text-brand-plum break-all bg-white/60 px-3 py-2 rounded-lg border border-brand-pink/10">
-                {shareUrl}
-              </code>
-              <button
-                type="button"
-                onClick={() => {
-                  void navigator.clipboard.writeText(shareUrl)
-                  setCopied(true)
-                  setTimeout(() => setCopied(false), 2000)
-                }}
-                className="inline-flex items-center justify-center gap-1.5 text-brand-pink-2 text-sm font-medium px-3 py-2 shrink-0"
-              >
-                <Copy size={16} />
-                Copy
-              </button>
-            </div>
+        {/* Action buttons */}
+        <motion.div
+          className="space-y-4"
+          initial="hidden"
+          animate="visible"
+          custom={6}
+          variants={fadeUp}
+        >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
+            <button type="button" onClick={() => void handleDownload()} className="btn-primary">
+              <FileDown size={18} />
+              Download My Ikigai Report
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleShareableLink()}
+              disabled={linkState === 'loading'}
+              className="btn-secondary disabled:opacity-50"
+            >
+              <Link2 size={18} className={linkState === 'loading' ? 'animate-pulse' : ''} />
+              {linkState === 'loading' ? 'Uploading…' : 'Get shareable link'}
+            </button>
           </div>
-        )}
 
-        {linkState === 'error' && linkError && <p className="text-center text-sm text-brand-pink-2">{linkError}</p>}
+          {downloadError && <p className="text-center text-sm text-brand-pink-2">{downloadError}</p>}
 
+          {linkState === 'success' && shareUrl && (
+            <div className="rounded-xl border border-brand-pink/20 bg-brand-cream/80 px-4 py-3 text-sm">
+              <p className="text-brand-plum/60 mb-2">{copied ? 'Link copied to clipboard.' : 'Your link (7-day access):'}</p>
+              <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+                <code className="flex-1 text-xs text-brand-plum break-all bg-white/60 px-3 py-2 rounded-lg border border-brand-pink/10">
+                  {shareUrl}
+                </code>
+                <button
+                  type="button"
+                  onClick={() => {
+                    void navigator.clipboard.writeText(shareUrl)
+                    setCopied(true)
+                    setTimeout(() => setCopied(false), 2000)
+                  }}
+                  className="inline-flex items-center justify-center gap-1.5 text-brand-pink-2 text-sm font-medium px-3 py-2 shrink-0"
+                >
+                  <Copy size={16} />
+                  Copy
+                </button>
+              </div>
+            </div>
+          )}
+
+          {linkState === 'error' && linkError && <p className="text-center text-sm text-brand-pink-2">{linkError}</p>}
+        </motion.div>
+
+        {/* Links */}
         <div className="text-center space-y-3 pb-4">
           <a
             href="https://www.linkedin.com/in/danielpaulai/"

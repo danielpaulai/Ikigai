@@ -131,28 +131,28 @@ Return ONLY valid JSON. No markdown. No backticks. No preamble.
   },
   "monetizationStrategies": [
     {
-      "title": "Strategy name — sounds like a real business, not a category",
+      "title": "Strategy name — sounds like a real business, not a category. STRATEGY 1 IS THE CLEAREST FIRST DOMINO — what they should start this week.",
       "description": "2–3 sentences. Tied to their situation. Ban generic advice templates.",
       "firstOffer": "Concrete offer + real price (e.g. 90-day advisory at $4,500)",
       "timeToRevenue": "Honest window (e.g. 3–6 weeks)",
       "incomeRange": "Honest band (e.g. $80K–$200K/year) grounded in their niche",
-      "icon": "Single ASCII letter A, B, or C only — no emoji"
+      "icon": "One emoji that represents the strategy type (e.g. coaching = 🎯, course = 📦, agency = 🏢, community = 👥, SaaS = ⚡, writing = ✍️, consulting = 🧠)"
     },
     {
-      "title": "Different lane from strategy 1",
+      "title": "Different lane from strategy 1 — different mechanism entirely (services vs product vs audience)",
       "description": "2–3 sentences. Different mechanism.",
       "firstOffer": "Concrete offer + price",
       "timeToRevenue": "Honest window",
       "incomeRange": "Honest band",
-      "icon": "Single letter only — no emoji"
+      "icon": "One emoji representing this strategy type"
     },
     {
-      "title": "Different lane from 1 and 2",
+      "title": "Different lane from 1 and 2 — another mechanism",
       "description": "2–3 sentences.",
       "firstOffer": "Concrete offer + price",
       "timeToRevenue": "Honest window",
       "incomeRange": "Honest band",
-      "icon": "Single letter only — no emoji"
+      "icon": "One emoji representing this strategy type"
     }
   ],
   "ninetyDayStep": "One action this week. Starts with a verb. Specific. Uses something they said.",
