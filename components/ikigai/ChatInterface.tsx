@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send, Pause, RotateCcw } from 'lucide-react'
+import { Send, Pause, RotateCcw, Zap, Waves } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
 import { QUESTION_LIMITS, SHORT_QUESTIONS, LONG_QUESTIONS } from '@/lib/questions'
 import type { IkigaiResults, Message } from '@/lib/types'
@@ -210,6 +210,9 @@ export default function ChatInterface() {
 
   const showTyping = isLoading || messages.length === 0
 
+  const modeLabel = mode === 'long' ? 'Deep Dive' : 'Quick'
+  const ModeIcon = mode === 'long' ? Waves : Zap
+
   return (
     <div className="flex flex-col h-[min(600px,80dvh)]">
       <div className="flex items-center gap-3 px-5 py-3 border-b border-brand-pink/15 bg-brand-cream/50">
@@ -219,9 +222,15 @@ export default function ChatInterface() {
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-center gap-2">
             <div className="min-w-0">
-              <span className="text-brand-plum font-medium text-sm font-serif italic block truncate">
-                Kai · Ikigai Coach
-              </span>
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="text-brand-plum font-medium text-sm font-serif italic truncate">
+                  Kai · Ikigai Coach
+                </span>
+                <span className="inline-flex items-center gap-1 bg-brand-plum/8 text-brand-plum/50 text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full shrink-0">
+                  <ModeIcon size={9} />
+                  {modeLabel}
+                </span>
+              </div>
               <span className="text-[10px] uppercase tracking-[0.12em] text-brand-pink-2 font-semibold block truncate">
                 {currentCircleLabel}
               </span>

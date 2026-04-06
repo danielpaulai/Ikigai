@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Copy, FileDown, Link2, Star } from 'lucide-react'
+import { Copy, FileDown, Link2, Star, Zap, Waves } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
 import type { IkigaiResults } from '@/lib/types'
 import PersonalizedDiagram from './PersonalizedDiagram'
@@ -24,6 +24,7 @@ const fadeUp = {
 export default function ResultsView({ onReset }: ResultsViewProps) {
   const results = useSessionStore((s) => s.results)
   const generationError = useSessionStore((s) => s.generationError)
+  const sessionMode = useSessionStore((s) => s.mode)
   const [linkState, setLinkState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [shareUrl, setShareUrl] = useState<string | null>(null)
   const [linkError, setLinkError] = useState<string | null>(null)
@@ -85,12 +86,21 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
   }
 
   const r = results as IkigaiResults
+  const isDeepDive = sessionMode === 'long'
+  const ModeIcon = isDeepDive ? Waves : Zap
+  const modeLabel = isDeepDive ? 'Deep Dive' : 'Quick Session'
 
   return (
     <div className="overflow-y-auto max-h-[min(90vh,900px)]">
       <div className="p-8 md:p-10 space-y-12">
         {/* Ikigai Statement + Diagram */}
         <motion.section className="text-center" initial="hidden" animate="visible" custom={0} variants={fadeUp}>
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <span className="inline-flex items-center gap-1.5 bg-brand-plum/8 text-brand-plum/50 text-[9px] uppercase tracking-wider font-bold px-3 py-1 rounded-full">
+              <ModeIcon size={10} />
+              {modeLabel} Results
+            </span>
+          </div>
           <div className="capsule-tag">Your Ikigai</div>
           {r.circleKeywords && (
             <div className="max-w-md mx-auto mb-8">
