@@ -246,6 +246,84 @@ function IkigaiReportDocument({ results }: { results: IkigaiResults }) {
           <Text style={styles.footerText}>linkedin.com/in/danielpaulai</Text>
         </View>
       </Page>
+
+      {/* Page 3: Claude Skills Roadmap */}
+      {r.skillsRoadmap && r.skillsRoadmap.claudeSkills && r.skillsRoadmap.claudeSkills.length > 0 && (
+        <Page size="A4" style={styles.page} wrap>
+          <View style={styles.section}>
+            <Text style={styles.label}>Claude Skills Roadmap</Text>
+            <Text style={styles.bodyLight}>
+              Tasks outside your zone of genius — and the Claude Skills to handle them.
+            </Text>
+          </View>
+
+          {r.skillsRoadmap.handoffTasks && r.skillsRoadmap.handoffTasks.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.label}>Your Handoff List</Text>
+              {r.skillsRoadmap.handoffTasks.map((task, i) => (
+                <View key={i} style={styles.cardNoBorder}>
+                  <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 2 }}>
+                    <Text style={{ fontSize: 9, color: c.pink2, fontWeight: 'bold', marginRight: 6 }}>
+                      {task.category === 'build_skill' ? 'BUILD' : task.category === 'existing_tool' ? 'USE TOOL' : 'YOUR ZONE'}
+                    </Text>
+                    <Text style={{ fontSize: 10, fontWeight: 'bold', color: c.plum, flex: 1 }}>{task.task}</Text>
+                  </View>
+                  <Text style={styles.actionDesc}>{task.reason}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
+          <View style={styles.section}>
+            <Text style={styles.label}>Your Claude Skills Stack</Text>
+            {r.skillsRoadmap.claudeSkills.map((skill, i) => (
+              <View key={i} style={styles.card}>
+                <View style={styles.strategyRow}>
+                  <View style={styles.numberBadge}>
+                    <Text style={styles.numberText}>{i + 1}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.subheading}>{skill.skillName}</Text>
+                    <Text style={{ fontSize: 8, color: c.pink2, textTransform: 'uppercase', marginBottom: 4 }}>
+                      {skill.priority === 'build_first' ? 'BUILD FIRST' : skill.priority === 'quick_win' ? 'QUICK WIN' : skill.priority === 'consider' ? 'CONSIDER' : 'LATER'}
+                      {' · '}Saves {skill.timeSavedPerWeek}/week
+                    </Text>
+                  </View>
+                </View>
+                <Text style={styles.body}>{skill.description}</Text>
+                <Text style={{ ...styles.bodyLight, fontStyle: 'italic' }}>
+                  Replaces: {skill.originalTask}
+                </Text>
+                <View style={{ backgroundColor: c.plum, padding: 8, borderRadius: 4, marginTop: 4 }}>
+                  <Text style={{ fontSize: 7, color: c.pink2, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 3, fontWeight: 'bold' }}>
+                    Starter Prompt
+                  </Text>
+                  <Text style={{ fontSize: 8, color: c.pink, lineHeight: 1.5 }}>
+                    {skill.starterPrompt}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          {r.skillsRoadmap.postSessionPrompt && (
+            <View style={styles.section}>
+              <Text style={styles.label}>Take-Home Prompt — Paste into Claude</Text>
+              <View style={{ backgroundColor: c.plum, padding: 12, borderRadius: 6 }}>
+                <Text style={{ fontSize: 9, color: c.pink, lineHeight: 1.6 }}>
+                  {r.skillsRoadmap.postSessionPrompt}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          <View style={styles.footer} fixed>
+            <Text style={styles.footerText}>Daniel Paul · danielpaul.ai</Text>
+            <Text style={styles.footerText}>newsletter.purelypersonal.ai</Text>
+            <Text style={styles.footerText}>linkedin.com/in/danielpaulai</Text>
+          </View>
+        </Page>
+      )}
     </Document>
   )
 }

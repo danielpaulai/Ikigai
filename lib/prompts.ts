@@ -174,7 +174,38 @@ Return ONLY valid JSON. No markdown. No backticks. No preamble.
   ],
   "personalQuote": "A 1–2 sentence mantra specific to THIS person. Not generic motivation. Reference their words. Something they would screenshot and save as their phone wallpaper. Written in second person. E.g. 'You don't need another credential. You need to charge what your clarity is worth — and your clarity is worth a lot.'",
   "ninetyDayStep": "One action this week. Starts with a verb. Specific. Uses something they said.",
-  "closingMessage": "2–3 sentences. Reference 2–3 specifics from the conversation. Forward motion. No emoji."
+  "closingMessage": "2–3 sentences. Reference 2–3 specifics from the conversation. Forward motion. No emoji.",
+  "skillsRoadmap": {
+    "handoffTasks": [
+      {
+        "task": "Name of a specific task OUTSIDE their Ikigai zone — something that drains them, they mentioned hating or struggling with, or that is clearly not in their zone of genius based on what they said. Be concrete. E.g. 'Writing weekly email newsletters', 'Creating social media graphics', 'Responding to DMs with the same onboarding info', 'Formatting proposals and contracts'.",
+        "reason": "One sentence explaining why this task is outside their zone. Reference their actual words. E.g. 'You said writing copy drains you — but you light up when coaching live. Let Claude write, you coach.'",
+        "category": "build_skill if the task is repeated, always explained the same way, eats >2 hours/week, or Claude could do in 60 seconds. existing_tool if a standard Claude feature already handles it (summarize, translate, analyze). stays_with_you if it requires their unique judgment, relationships, or creative instinct.",
+        "timeCost": "high if >2 hours per week, low if less",
+        "repetition": "high if it happens weekly or more, low if occasional"
+      }
+    ],
+    "claudeSkills": [
+      {
+        "skillName": "Short punchy name for the Claude Skill. Sounds like a real tool. E.g. 'Client Onboarding Responder', 'Weekly Newsletter Drafter', 'Proposal Builder', 'Content Repurposer'.",
+        "description": "One sentence: what this Skill does. E.g. 'Takes a new client name and generates a personalized welcome sequence with next steps.'",
+        "whoUsesIt": "Who benefits: founder, team, or client. E.g. 'You — saves 3 hours every Monday morning.'",
+        "timeSavedPerWeek": "Honest estimate. E.g. '2–3 hours', '45 minutes', '4+ hours'.",
+        "originalTask": "The handoff task this Skill replaces. Must match a task from handoffTasks.",
+        "whatToTellClaude": "Plain English instruction the user would give Claude. 1–2 sentences. E.g. 'Here is a new client name and their business type. Write a warm welcome email, list their first three steps, and draft a follow-up for day 3.'",
+        "starterPrompt": "A ready-to-paste Claude system prompt. 3–5 sentences. Specific to this person's business and language. Include context from the conversation. This should work TODAY if they paste it. E.g. 'You are a client onboarding assistant for [their business]. When given a new client name and business type, write a warm, direct welcome email in my voice (no fluff, specific next steps). Include: 1) What they can expect in week one, 2) Three action items to complete before our first call, 3) A follow-up email for day 3 checking in on progress. Tone: professional but human — like a smart friend who happens to run a tight ship.'",
+        "priority": "build_first = high time cost + high repetition (top priority). quick_win = low time cost + high repetition. consider = high time cost + low repetition. skip = low time cost + low repetition."
+      }
+    ],
+    "postSessionPrompt": "A complete fill-in prompt template the user can paste into Claude after the session. Include their specific tasks and context. Format: 'Here are the tasks outside my zone of genius: [list their actual tasks from handoffTasks]. For each one, suggest a Claude Skill I can build, give it a name, and write me a starter system prompt I can use today. My zone of genius is [their ikigai statement]. I am a [their archetype]. Keep prompts specific to my situation and ready to use immediately.'"
+  }
 }
+
+SKILLS ROADMAP RULES:
+- Generate 5–8 handoff tasks. At least 3 must be category "build_skill". At least 1 should be "stays_with_you" to validate what belongs in their zone.
+- Generate 3–5 Claude Skills (only for tasks categorized as "build_skill"). Each must have a real, usable starterPrompt.
+- The starterPrompt must be specific to THIS person — reference their business, their language, their audience. Not generic templates.
+- Priority must match the time/repetition axes: high+high = build_first, low+high = quick_win, high+low = consider, low+low = skip.
+- The postSessionPrompt should be a single paragraph they can paste into Claude. Use their actual task names.
 `.trim()
 }

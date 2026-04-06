@@ -8,6 +8,7 @@ import { track } from '@/lib/track'
 import type { IkigaiResults } from '@/lib/types'
 import PersonalizedDiagram from './PersonalizedDiagram'
 import MomentumCards from './MomentumCards'
+import SkillsRoadmap from './SkillsRoadmap'
 
 interface ResultsViewProps {
   onReset: () => void
@@ -240,16 +241,23 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
           </motion.section>
         )}
 
+        {/* Claude Skills Roadmap */}
+        {r.skillsRoadmap && r.skillsRoadmap.claudeSkills && r.skillsRoadmap.claudeSkills.length > 0 && (
+          <motion.section initial="hidden" animate="visible" custom={5} variants={fadeUp}>
+            <SkillsRoadmap roadmap={r.skillsRoadmap} />
+          </motion.section>
+        )}
+
         {/* Closing */}
         <motion.p
           className="font-serif italic text-brand-plum/55 text-center text-base leading-relaxed max-w-xl mx-auto"
-          initial="hidden" animate="visible" custom={5} variants={fadeUp}
+          initial="hidden" animate="visible" custom={6} variants={fadeUp}
         >
           {r.closingMessage}
         </motion.p>
 
         {/* Action buttons */}
-        <motion.div className="space-y-4" initial="hidden" animate="visible" custom={6} variants={fadeUp}>
+        <motion.div className="space-y-4" initial="hidden" animate="visible" custom={7} variants={fadeUp}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
             <button type="button" onClick={() => void handleDownload()} className="btn-primary">
               <FileDown size={18} />

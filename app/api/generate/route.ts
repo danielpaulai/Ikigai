@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       anthropic,
       {
         model: ANTHROPIC_MODEL_GENERATE,
-        max_tokens: mode === 'long' ? 3200 : 2800,
+        max_tokens: mode === 'long' ? 5000 : 4200,
         messages: [
           {
             role: 'user',

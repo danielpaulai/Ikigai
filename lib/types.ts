@@ -6,6 +6,31 @@ export interface Message {
   timestamp: number
 }
 
+export interface HandoffTask {
+  task: string
+  reason: string
+  category: 'build_skill' | 'existing_tool' | 'stays_with_you'
+  timeCost: 'high' | 'low'
+  repetition: 'high' | 'low'
+}
+
+export interface ClaudeSkill {
+  skillName: string
+  description: string
+  whoUsesIt: string
+  timeSavedPerWeek: string
+  originalTask: string
+  whatToTellClaude: string
+  starterPrompt: string
+  priority: 'build_first' | 'quick_win' | 'consider' | 'skip'
+}
+
+export interface SkillsRoadmap {
+  handoffTasks: HandoffTask[]
+  claudeSkills: ClaudeSkill[]
+  postSessionPrompt: string
+}
+
 export interface IkigaiResults {
   ikigaiStatement: string
   archetype: {
@@ -43,4 +68,5 @@ export interface IkigaiResults {
   personalQuote: string
   ninetyDayStep: string
   closingMessage: string
+  skillsRoadmap?: SkillsRoadmap
 }

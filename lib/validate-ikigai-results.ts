@@ -68,5 +68,25 @@ export function isValidIkigaiResults(data: unknown): data is IkigaiResults {
 
   if (o.personalQuote !== undefined && typeof o.personalQuote !== 'string') return false
 
+  if (o.skillsRoadmap && typeof o.skillsRoadmap === 'object') {
+    const sr = o.skillsRoadmap as Record<string, unknown>
+
+    if (Array.isArray(sr.handoffTasks)) {
+      for (const t of sr.handoffTasks) {
+        if (!t || typeof t !== 'object') return false
+        const ht = t as Record<string, unknown>
+        if (typeof ht.task !== 'string' || typeof ht.category !== 'string') return false
+      }
+    }
+
+    if (Array.isArray(sr.claudeSkills)) {
+      for (const s of sr.claudeSkills) {
+        if (!s || typeof s !== 'object') return false
+        const cs = s as Record<string, unknown>
+        if (typeof cs.skillName !== 'string' || typeof cs.starterPrompt !== 'string') return false
+      }
+    }
+  }
+
   return true
 }
