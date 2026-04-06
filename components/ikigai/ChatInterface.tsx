@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send } from 'lucide-react'
+import { Send, Pause, RotateCcw } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
 import { QUESTION_LIMITS, SHORT_QUESTIONS, LONG_QUESTIONS } from '@/lib/questions'
 import type { IkigaiResults, Message } from '@/lib/types'
@@ -33,6 +33,7 @@ export default function ChatInterface() {
   const setToolView = useSessionStore((s) => s.setToolView)
 
   const [input, setInput] = useState('')
+  const [showSavedToast, setShowSavedToast] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -193,13 +194,27 @@ export default function ChatInterface() {
     }
   }
 
+  const handleSaveExit = () => {
+    setShowSavedToast(true)
+    setTimeout(() => {
+      setShowSavedToast(false)
+      setToolView('mode')
+    }, 1500)
+  }
+
+  const handleReset = () => {
+    if (userMessageCount > 0) {
+      useSessionStore.getState().reset()
+    }
+  }
+
   const showTyping = isLoading || messages.length === 0
 
   return (
     <div className="flex flex-col h-[min(600px,80dvh)]">
-      <div className="flex items-center gap-3 px-6 py-4 border-b border-brand-pink/15 bg-brand-cream/50">
-        <div className="w-9 h-9 rounded-full bg-brand-pink flex items-center justify-center shadow-[0_0_12px_rgba(255,183,197,0.5)] flex-shrink-0">
-          <span className="text-brand-plum font-serif font-bold text-sm italic">K</span>
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-brand-pink/15 bg-brand-cream/50">
+        <div className="w-8 h-8 rounded-full bg-brand-pink flex items-center justify-center shadow-[0_0_10px_rgba(255,183,197,0.4)] flex-shrink-0">
+          <span className="text-brand-plum font-serif font-bold text-xs italic">K</span>
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-center gap-2">
@@ -211,13 +226,37 @@ export default function ChatInterface() {
                 {currentCircleLabel}
               </span>
             </div>
-            <span className="text-brand-plum/40 text-xs shrink-0">
-              {userMessageCount} of {limit}
-            </span>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-brand-plum/40 text-xs">
+                {userMessageCount}/{limit}
+              </span>
+              <button
+                type="button"
+                onClick={handleSaveExit}
+                title="Save & continue later"
+                className="w-7 h-7 rounded-lg bg-brand-plum/5 hover:bg-brand-plum/10 flex items-center justify-center text-brand-plum/40 hover:text-brand-plum/70 transition-colors"
+              >
+                <Pause size={12} />
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                title="Start over"
+                className="w-7 h-7 rounded-lg bg-brand-plum/5 hover:bg-brand-pink-2/20 flex items-center justify-center text-brand-plum/40 hover:text-brand-pink-2 transition-colors"
+              >
+                <RotateCcw size={12} />
+              </button>
+            </div>
           </div>
           <ProgressBar progress={progress} />
         </div>
       </div>
+
+      {showSavedToast && (
+        <div className="px-5 py-2 bg-brand-plum text-brand-pink text-xs text-center font-medium">
+          Session saved. You can close this page and come back anytime.
+        </div>
+      )}
 
       <div
         ref={scrollRef}

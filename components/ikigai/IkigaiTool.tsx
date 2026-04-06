@@ -18,12 +18,47 @@ function GlassShell({ children }: { children: React.ReactNode }) {
   )
 }
 
+function ResumePrompt({ onResume, onRestart }: { onResume: () => void; onRestart: () => void }) {
+  const messages = useSessionStore((s) => s.messages)
+  const userMessageCount = useSessionStore((s) => s.userMessageCount)
+  const mode = useSessionStore((s) => s.mode)
+  const modeLabel = mode === 'long' ? 'Deep Dive' : 'Quick Session'
+
+  return (
+    <div className="p-8 text-center">
+      <div className="w-12 h-12 rounded-full bg-brand-pink/20 flex items-center justify-center mx-auto mb-4">
+        <span className="text-brand-plum font-serif font-bold text-lg italic">K</span>
+      </div>
+      <h3 className="text-xl font-serif italic text-brand-plum mb-2">Welcome back</h3>
+      <p className="text-brand-plum/50 text-sm mb-6 max-w-sm mx-auto">
+        You have a {modeLabel} in progress with {userMessageCount} answer{userMessageCount !== 1 ? 's' : ''} and {messages.length} messages.
+      </p>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <button type="button" onClick={onResume} className="btn-primary px-8 py-3 text-sm">
+          Continue Session
+        </button>
+        <button
+          type="button"
+          onClick={onRestart}
+          className="px-8 py-3 text-sm rounded-full border border-brand-plum/15 text-brand-plum/60 hover:bg-brand-plum/5 transition-colors font-medium"
+        >
+          Start Fresh
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function IkigaiTool() {
   const toolView = useSessionStore((s) => s.toolView)
+  const messages = useSessionStore((s) => s.messages)
+  const mode = useSessionStore((s) => s.mode)
   const addMessage = useSessionStore((s) => s.addMessage)
   const appendAssistantDelta = useSessionStore((s) => s.appendAssistantDelta)
   const flushAssistantStreaming = useSessionStore((s) => s.flushAssistantStreaming)
   const setToolView = useSessionStore((s) => s.setToolView)
+
+  const hasSavedSession = toolView === 'mode' && mode !== null && messages.length > 0
 
   const startSession = async (selectedMode: 'short' | 'long') => {
     useSessionStore.getState().setMode(selectedMode)
@@ -88,6 +123,18 @@ export default function IkigaiTool() {
 
   const handleReset = () => {
     useSessionStore.getState().reset()
+  }
+
+  const handleResume = () => {
+    setToolView('chat')
+  }
+
+  if (hasSavedSession) {
+    return (
+      <GlassShell>
+        <ResumePrompt onResume={handleResume} onRestart={handleReset} />
+      </GlassShell>
+    )
   }
 
   if (toolView === 'mode') {
