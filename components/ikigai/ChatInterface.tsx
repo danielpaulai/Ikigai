@@ -11,14 +11,56 @@ import {
   readNdjsonChatStream,
 } from '@/lib/chat-stream-client'
 import ChatBubble from './ChatBubble'
+import CircleTransitionCard from './CircleTransitionCard'
 import TypingIndicator from './TypingIndicator'
 import VoiceButton from './VoiceButton'
 import ProgressBar from './ProgressBar'
+import type { QuestionEntry } from '@/lib/questions'
 
 const ERR_GENERIC = 'Something broke on our side. Your answer is saved — hit send again.'
 const ERR_CONN = 'Connection dropped. Send that again — I will pick it up.'
 const ERR_EMPTY = "Let's keep going — say more when you're ready."
 const ERR_CUTOFF = '\n\n— That response cut off. Send again when ready.'
+
+interface CircleBoundary {
+  afterUserMsg: number
+  completedCircle: string
+  completedIndex: number
+  totalCircles: number
+  nextCircle: string | null
+}
+
+function computeCircleBoundaries(questions: QuestionEntry[]): CircleBoundary[] {
+  const boundaries: CircleBoundary[] = []
+  const circles: string[] = []
+  let current = ''
+
+  for (const q of questions) {
+    if (q.circleLabel !== current) {
+      circles.push(q.circleLabel)
+      current = q.circleLabel
+    }
+  }
+
+  let qIdx = 0
+  for (let ci = 0; ci < circles.length; ci++) {
+    const circle = circles[ci]
+    while (qIdx < questions.length && questions[qIdx].circleLabel === circle) {
+      qIdx++
+    }
+    if (ci < circles.length - 1) {
+      boundaries.push({
+        afterUserMsg: qIdx,
+        completedCircle: circle,
+        completedIndex: ci,
+        totalCircles: circles.length,
+        nextCircle: circles[ci + 1] || null,
+      })
+    }
+  }
+
+  return boundaries
+}
 
 export default function ChatInterface() {
   const mode = useSessionStore((s) => s.mode)
@@ -272,9 +314,37 @@ export default function ChatInterface() {
         className="flex-1 overflow-y-auto overflow-x-hidden p-6 flex flex-col gap-4 min-h-0 scroll-smooth"
         style={{ scrollBehavior: 'auto' }}
       >
-        {messages.map((msg, i) => (
-          <ChatBubble key={`${msg.timestamp}-${i}`} role={msg.role} content={msg.content} />
-        ))}
+        {(() => {
+          const boundaries = computeCircleBoundaries(questions)
+          const boundarySet = new Map(boundaries.map((b) => [b.afterUserMsg, b]))
+          const elements: React.ReactNode[] = []
+          let uCount = 0
+
+          for (let i = 0; i < messages.length; i++) {
+            const msg = messages[i]
+            elements.push(
+              <ChatBubble key={`${msg.timestamp}-${i}`} role={msg.role} content={msg.content} />
+            )
+
+            if (msg.role === 'user') {
+              uCount++
+              const boundary = boundarySet.get(uCount)
+              if (boundary) {
+                elements.push(
+                  <CircleTransitionCard
+                    key={`transition-${boundary.completedIndex}`}
+                    completedCircle={boundary.completedCircle}
+                    completedIndex={boundary.completedIndex}
+                    totalCircles={boundary.totalCircles}
+                    nextCircle={boundary.nextCircle}
+                  />
+                )
+              }
+            }
+          }
+
+          return elements
+        })()}
         {showTyping && <TypingIndicator />}
       </div>
 
