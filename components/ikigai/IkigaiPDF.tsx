@@ -12,6 +12,7 @@ const c = {
   pink: '#FFB7C5',
   pink2: '#FF8DA1',
   border: '#e5e5e5',
+  white: '#FFFFFF',
 }
 
 const styles = StyleSheet.create({
@@ -61,6 +62,41 @@ const styles = StyleSheet.create({
   circleLabel: { fontSize: 8, color: c.pink2, textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 4, fontWeight: 'bold' },
   metaBadge: { fontSize: 8, color: c.plumLight, marginRight: 12 },
   metaRow: { flexDirection: 'row', marginBottom: 6 },
+  numberBadge: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    backgroundColor: c.plum,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
+  numberText: { fontSize: 9, fontWeight: 'bold', color: c.pink },
+  strategyRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 },
+  quoteBlock: {
+    backgroundColor: c.plum,
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  quoteText: { fontSize: 12, color: c.pink, fontStyle: 'italic', lineHeight: 1.6 },
+  actionStepCard: {
+    flexDirection: 'row',
+    backgroundColor: c.cream2,
+    padding: 10,
+    borderRadius: 6,
+    marginBottom: 6,
+  },
+  actionTimeframe: {
+    fontSize: 7,
+    color: c.pink2,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
+  actionTitle: { fontSize: 10, fontWeight: 'bold', color: c.plum, marginBottom: 2 },
+  actionDesc: { fontSize: 9, color: c.plumLight, lineHeight: 1.5 },
   footer: {
     position: 'absolute',
     bottom: 28,
@@ -97,7 +133,6 @@ function IkigaiReportDocument({ results }: { results: IkigaiResults }) {
           <Text style={styles.heading}>{r.archetype.name}</Text>
           <Text style={styles.bodyLight}>{r.archetype.tagline}</Text>
           <Text style={styles.body}>{r.archetype.description}</Text>
-
           {r.archetype.strengths.length > 0 && (
             <View style={styles.chipRow}>
               {r.archetype.strengths.map((s) => (
@@ -105,7 +140,6 @@ function IkigaiReportDocument({ results }: { results: IkigaiResults }) {
               ))}
             </View>
           )}
-
           {r.archetype.watchOut ? (
             <View style={styles.card}>
               <Text style={styles.body}>Growth edge: {r.archetype.watchOut}</Text>
@@ -133,7 +167,8 @@ function IkigaiReportDocument({ results }: { results: IkigaiResults }) {
                 )}
                 <Text style={styles.body}>{circle.insight}</Text>
               </View>
-            ))}</View>
+            ))}
+          </View>
         </View>
 
         <View style={styles.footer} fixed>
@@ -143,13 +178,20 @@ function IkigaiReportDocument({ results }: { results: IkigaiResults }) {
         </View>
       </Page>
 
-      {/* Page 2: Monetization + First Step + Closing */}
+      {/* Page 2: Monetization + Actions + Closing */}
       <Page size="A4" style={styles.page} wrap>
         <View style={styles.section}>
           <Text style={styles.label}>How to Monetize Your Ikigai</Text>
           {r.monetizationStrategies.map((s, i) => (
             <View key={i} style={styles.card}>
-              <Text style={styles.subheading}>{s.title}</Text>
+              <View style={styles.strategyRow}>
+                <View style={styles.numberBadge}>
+                  <Text style={styles.numberText}>{String(i + 1).padStart(2, '0')}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.subheading}>{s.title}</Text>
+                </View>
+              </View>
               <View style={styles.metaRow}>
                 <Text style={styles.metaBadge}>Time to revenue: {s.timeToRevenue}</Text>
                 <Text style={styles.metaBadge}>Income range: {s.incomeRange}</Text>
@@ -159,6 +201,33 @@ function IkigaiReportDocument({ results }: { results: IkigaiResults }) {
             </View>
           ))}
         </View>
+
+        {r.personalQuote && (
+          <View style={styles.section}>
+            <Text style={styles.label}>Your Mantra</Text>
+            <View style={styles.quoteBlock}>
+              <Text style={styles.quoteText}>&quot;{r.personalQuote}&quot;</Text>
+            </View>
+          </View>
+        )}
+
+        {r.actionSteps && r.actionSteps.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.label}>Your Action Roadmap</Text>
+            {r.actionSteps.map((step, i) => (
+              <View key={i} style={styles.actionStepCard}>
+                <View style={{ ...styles.numberBadge, marginTop: 2 }}>
+                  <Text style={styles.numberText}>{i + 1}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.actionTimeframe}>{step.timeframe}</Text>
+                  <Text style={styles.actionTitle}>{step.title}</Text>
+                  <Text style={styles.actionDesc}>{step.description}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
 
         <View style={styles.section}>
           <Text style={styles.label}>Your First Step This Week</Text>

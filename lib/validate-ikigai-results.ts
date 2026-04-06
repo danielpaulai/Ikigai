@@ -1,8 +1,5 @@
 import type { IkigaiResults } from '@/lib/types'
 
-/**
- * Minimal structural check so we never persist half-parsed JSON into the UI.
- */
 export function isValidIkigaiResults(data: unknown): data is IkigaiResults {
   if (!data || typeof data !== 'object') return false
   const o = data as Record<string, unknown>
@@ -54,12 +51,22 @@ export function isValidIkigaiResults(data: unknown): data is IkigaiResults {
       typeof m.description !== 'string' ||
       typeof m.firstOffer !== 'string' ||
       typeof m.timeToRevenue !== 'string' ||
-      typeof m.incomeRange !== 'string' ||
-      typeof m.icon !== 'string'
+      typeof m.incomeRange !== 'string'
     ) {
       return false
     }
   }
+
+  if (Array.isArray(o.actionSteps)) {
+    for (const step of o.actionSteps) {
+      if (!step || typeof step !== 'object') return false
+      const st = step as Record<string, unknown>
+      if (typeof st.title !== 'string' || typeof st.description !== 'string' || typeof st.timeframe !== 'string')
+        return false
+    }
+  }
+
+  if (o.personalQuote !== undefined && typeof o.personalQuote !== 'string') return false
 
   return true
 }

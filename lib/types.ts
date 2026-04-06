@@ -35,6 +35,12 @@ export interface IkigaiResults {
     incomeRange: string
     icon: string
   }>
+  actionSteps: Array<{
+    title: string
+    description: string
+    timeframe: string
+  }>
+  personalQuote: string
   ninetyDayStep: string
   closingMessage: string
 }

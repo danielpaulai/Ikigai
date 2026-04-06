@@ -136,7 +136,7 @@ Return ONLY valid JSON. No markdown. No backticks. No preamble.
       "firstOffer": "Concrete offer + real price (e.g. 90-day advisory at $4,500)",
       "timeToRevenue": "Honest window (e.g. 3–6 weeks)",
       "incomeRange": "Honest band (e.g. $80K–$200K/year) grounded in their niche",
-      "icon": "One emoji that represents the strategy type (e.g. coaching = 🎯, course = 📦, agency = 🏢, community = 👥, SaaS = ⚡, writing = ✍️, consulting = 🧠)"
+      "icon": "One lowercase word describing the strategy type: coaching, product, agency, community, content, consulting, workshop, saas"
     },
     {
       "title": "Different lane from strategy 1 — different mechanism entirely (services vs product vs audience)",
@@ -144,7 +144,7 @@ Return ONLY valid JSON. No markdown. No backticks. No preamble.
       "firstOffer": "Concrete offer + price",
       "timeToRevenue": "Honest window",
       "incomeRange": "Honest band",
-      "icon": "One emoji representing this strategy type"
+      "icon": "One lowercase word: coaching, product, agency, community, content, consulting, workshop, saas"
     },
     {
       "title": "Different lane from 1 and 2 — another mechanism",
@@ -152,9 +152,27 @@ Return ONLY valid JSON. No markdown. No backticks. No preamble.
       "firstOffer": "Concrete offer + price",
       "timeToRevenue": "Honest window",
       "incomeRange": "Honest band",
-      "icon": "One emoji representing this strategy type"
+      "icon": "One lowercase word: coaching, product, agency, community, content, consulting, workshop, saas"
     }
   ],
+  "actionSteps": [
+    {
+      "title": "3–6 word action title. Punchy. E.g. 'Record your first demo'",
+      "description": "One sentence. Specific. Starts with a verb. References something they said. E.g. 'Film a 10-minute screen share of one AI content workflow and send it to three founders who have asked for help.'",
+      "timeframe": "This week"
+    },
+    {
+      "title": "Next action after step 1 is done",
+      "description": "One sentence. Specific. Builds on step 1.",
+      "timeframe": "This month"
+    },
+    {
+      "title": "The 90-day milestone",
+      "description": "One sentence. Specific. The tangible outcome they are working toward.",
+      "timeframe": "In 90 days"
+    }
+  ],
+  "personalQuote": "A 1–2 sentence mantra specific to THIS person. Not generic motivation. Reference their words. Something they would screenshot and save as their phone wallpaper. Written in second person. E.g. 'You don't need another credential. You need to charge what your clarity is worth — and your clarity is worth a lot.'",
   "ninetyDayStep": "One action this week. Starts with a verb. Specific. Uses something they said.",
   "closingMessage": "2–3 sentences. Reference 2–3 specifics from the conversation. Forward motion. No emoji."
 }
