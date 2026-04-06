@@ -117,6 +117,12 @@ Return ONLY valid JSON. No markdown. No backticks. No preamble.
     "strengths": ["Specific strength tied to their words", "Second", "Third"],
     "watchOut": "One growth edge — direct, kind, useful. Not a fake weakness."
   },
+  "circleKeywords": {
+    "love": ["2–4 short phrases extracted from their answers about what they love. Each 2–5 words. Use their language, not yours. E.g. 'building AI tools', 'teaching systems thinking', 'writing at 2am'"],
+    "skills": ["2–4 short phrases about what they are good at. E.g. 'simplifying complexity', 'coaching founders', 'pattern recognition'"],
+    "world": ["2–4 short phrases about what the world needs from them. E.g. 'clarity for overwhelmed founders', 'honest AI education'"],
+    "money": ["2–4 short phrases about what they can be paid for. E.g. 'AI advisory retainers', 'systems design workshops', 'content strategy'"]
+  },
   "circleInsights": {
     "love": "2 tight sentences. Their language. What actually lights them up based on what they said about passion and flow.",
     "skills": "2 tight sentences. Gifts evidenced in what they said about their abilities and what others come to them for.",

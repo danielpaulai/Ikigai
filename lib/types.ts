@@ -15,6 +15,12 @@ export interface IkigaiResults {
     strengths: string[]
     watchOut: string
   }
+  circleKeywords: {
+    love: string[]
+    skills: string[]
+    world: string[]
+    money: string[]
+  }
   circleInsights: {
     love: string
     skills: string

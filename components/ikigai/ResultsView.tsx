@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 import { Copy, FileDown, Link2 } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
 import type { IkigaiResults } from '@/lib/types'
+import PersonalizedDiagram from './PersonalizedDiagram'
 
 interface ResultsViewProps {
   onReset: () => void
@@ -88,7 +89,17 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
       <div className="p-8 md:p-10 space-y-12">
         <section className="text-center">
           <div className="capsule-tag">Your Ikigai</div>
-          <div className="w-12 h-0.5 bg-brand-pink mx-auto mb-8" />
+
+          {r.circleKeywords && (
+            <div className="max-w-md mx-auto mb-8">
+              <PersonalizedDiagram
+                keywords={r.circleKeywords}
+                ikigaiStatement={r.ikigaiStatement}
+              />
+            </div>
+          )}
+
+          <div className="w-12 h-0.5 bg-brand-pink mx-auto mb-6" />
           <p className="font-serif italic text-brand-plum text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
             {r.ikigaiStatement}
           </p>

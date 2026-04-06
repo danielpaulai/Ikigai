@@ -22,6 +22,17 @@ export function isValidIkigaiResults(data: unknown): data is IkigaiResults {
   }
   if (typeof a.watchOut !== 'string') return false
 
+  const ck = o.circleKeywords
+  if (ck && typeof ck === 'object') {
+    const k = ck as Record<string, unknown>
+    for (const key of ['love', 'skills', 'world', 'money']) {
+      if (!Array.isArray(k[key])) return false
+      for (const item of k[key] as unknown[]) {
+        if (typeof item !== 'string') return false
+      }
+    }
+  }
+
   const ci = o.circleInsights
   if (!ci || typeof ci !== 'object') return false
   const c = ci as Record<string, unknown>

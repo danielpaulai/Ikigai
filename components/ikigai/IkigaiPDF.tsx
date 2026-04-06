@@ -116,23 +116,24 @@ function IkigaiReportDocument({ results }: { results: IkigaiResults }) {
         <View style={styles.section}>
           <Text style={styles.label}>Your Four Circles</Text>
           <View style={styles.circleGrid}>
-            <View style={styles.circleCard}>
-              <Text style={styles.circleLabel}>What You Love</Text>
-              <Text style={styles.body}>{r.circleInsights.love}</Text>
-            </View>
-            <View style={styles.circleCard}>
-              <Text style={styles.circleLabel}>What You&apos;re Good At</Text>
-              <Text style={styles.body}>{r.circleInsights.skills}</Text>
-            </View>
-            <View style={styles.circleCard}>
-              <Text style={styles.circleLabel}>What the World Needs</Text>
-              <Text style={styles.body}>{r.circleInsights.mission}</Text>
-            </View>
-            <View style={styles.circleCard}>
-              <Text style={styles.circleLabel}>What You Can Be Paid For</Text>
-              <Text style={styles.body}>{r.circleInsights.profession}</Text>
-            </View>
-          </View>
+            {([
+              { label: 'What You Love', insight: r.circleInsights.love, kwKey: 'love' as const },
+              { label: "What You're Good At", insight: r.circleInsights.skills, kwKey: 'skills' as const },
+              { label: 'What the World Needs', insight: r.circleInsights.mission, kwKey: 'world' as const },
+              { label: 'What You Can Be Paid For', insight: r.circleInsights.profession, kwKey: 'money' as const },
+            ]).map((circle) => (
+              <View key={circle.label} style={styles.circleCard}>
+                <Text style={styles.circleLabel}>{circle.label}</Text>
+                {r.circleKeywords && r.circleKeywords[circle.kwKey]?.length > 0 && (
+                  <View style={styles.chipRow}>
+                    {r.circleKeywords[circle.kwKey].map((kw) => (
+                      <Text key={kw} style={styles.chip}>{kw}</Text>
+                    ))}
+                  </View>
+                )}
+                <Text style={styles.body}>{circle.insight}</Text>
+              </View>
+            ))}</View>
         </View>
 
         <View style={styles.footer} fixed>
