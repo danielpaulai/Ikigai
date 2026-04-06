@@ -16,11 +16,18 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
   const [shareUrl, setShareUrl] = useState<string | null>(null)
   const [linkError, setLinkError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [downloadError, setDownloadError] = useState<string | null>(null)
 
   const handleDownload = useCallback(async () => {
     if (!results) return
-    const { downloadIkigaiPDF } = await import('./IkigaiPDF')
-    await downloadIkigaiPDF(results)
+    setDownloadError(null)
+    try {
+      const { downloadIkigaiPDF } = await import('./IkigaiPDF')
+      await downloadIkigaiPDF(results)
+    } catch (err) {
+      console.error('PDF download error:', err)
+      setDownloadError('Could not generate the PDF. Try again in a moment.')
+    }
   }, [results])
 
   const handleShareableLink = useCallback(async () => {
@@ -170,6 +177,8 @@ export default function ResultsView({ onReset }: ResultsViewProps) {
             {linkState === 'loading' ? 'Uploading…' : 'Get shareable link'}
           </button>
         </div>
+
+        {downloadError && <p className="text-center text-sm text-brand-pink-2">{downloadError}</p>}
 
         {linkState === 'success' && shareUrl && (
           <div className="rounded-xl border border-brand-pink/20 bg-brand-cream/80 px-4 py-3 text-sm">

@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react'
 import { Send } from 'lucide-react'
 import { useSessionStore } from '@/store/useSessionStore'
 import { QUESTION_LIMITS, SHORT_QUESTIONS, LONG_QUESTIONS } from '@/lib/questions'
-import { SESSION_MODES } from '@/lib/session-modes'
 import type { IkigaiResults, Message } from '@/lib/types'
 import { fetchJsonWithRetry } from '@/lib/fetch-with-retry'
 import {
@@ -40,7 +39,6 @@ export default function ChatInterface() {
 
   const limit = QUESTION_LIMITS[mode === 'long' ? 'long' : 'short']
   const progress = Math.min(userMessageCount / limit, 1)
-  const modeMeta = mode ? SESSION_MODES[mode] : null
 
   const questions = mode === 'long' ? LONG_QUESTIONS : SHORT_QUESTIONS
   const currentCircleLabel =
@@ -198,7 +196,7 @@ export default function ChatInterface() {
   const showTyping = isLoading || messages.length === 0
 
   return (
-    <div className="flex flex-col h-[600px]">
+    <div className="flex flex-col h-[min(600px,80dvh)]">
       <div className="flex items-center gap-3 px-6 py-4 border-b border-brand-pink/15 bg-brand-cream/50">
         <div className="w-9 h-9 rounded-full bg-brand-pink flex items-center justify-center shadow-[0_0_12px_rgba(255,183,197,0.5)] flex-shrink-0">
           <span className="text-brand-plum font-serif font-bold text-sm italic">K</span>
