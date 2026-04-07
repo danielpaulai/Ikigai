@@ -36,7 +36,15 @@ export default function Navbar() {
           <span className="text-lg font-serif italic tracking-tight text-brand-plum hidden sm:block">Daniel Paul</span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
+          <a
+            href="/what-is-ikigai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 sm:px-5 py-2 rounded-full border border-brand-plum/15 text-brand-plum/70 text-xs font-semibold hover:bg-brand-plum/5 transition-colors"
+          >
+            What is Ikigai?
+          </a>
           <button
             type="button"
             onClick={() => scrollTo('action')}

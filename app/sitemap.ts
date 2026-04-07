@@ -11,5 +11,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 1,
     },
+    {
+      url: `${site}/what-is-ikigai`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
   ]
 }
