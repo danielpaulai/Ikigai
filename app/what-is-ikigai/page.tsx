@@ -6,7 +6,7 @@ const site = 'https://danielpaul.ai'
 export const metadata: Metadata = {
   title: 'What is Ikigai? — Daniel Paul',
   description:
-    'A short, visual introduction to Ikigai: passion, mission, vocation, and profession — and how they overlap.',
+    'A student-friendly guide to Ikigai: Japanese roots, the four circles, each overlap explained with prompts — plus imagery and habits to explore your path.',
   alternates: {
     canonical: `${site}/what-is-ikigai`,
   },
