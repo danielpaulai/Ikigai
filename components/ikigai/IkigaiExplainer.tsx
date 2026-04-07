@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
+import { ikigaiExplainerImages } from '@/lib/ikigai-explainer-images'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -45,9 +46,7 @@ const sections = [
     students:
       'Coding side projects, music practice, tutoring younger students, designing posters, writing stories, fixing bikes, debating, caring for animals — look for patterns, not perfection.',
     prompt: 'What work would you still do (for a while) even if it never became your job?',
-    image:
-      'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=1200&q=80&auto=format&fit=crop',
-    imageAlt: 'Hands preparing food with care — craft and repetition, a familiar scene in Japanese kitchens',
+    imageKey: 'passion',
     align: 'left' as const,
     accent: 'from-[#ff8da1]/25 to-brand-plum/5',
   },
@@ -63,9 +62,7 @@ const sections = [
     students:
       'Volunteering, advocacy, peer support, sustainability clubs, open-source tools for others, teaching what you learned the hard way.',
     prompt: 'If you could lift one burden from people your age, what would it be — and why you?',
-    image:
-      'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200&q=80&auto=format&fit=crop',
-    imageAlt: 'Fushimi Inari torii gates in Kyoto — a path walked one step at a time',
+    imageKey: 'mission',
     align: 'right' as const,
     accent: 'from-brand-pink/30 to-[#2e2f53]/10',
   },
@@ -81,9 +78,7 @@ const sections = [
     students:
       'Tutoring, design for local businesses, technical support, seasonal jobs that teach people skills, paid research assistance, selling something you make.',
     prompt: 'What problem would a neighbor or small business pay $20 to have solved this week?',
-    image:
-      'https://images.unsplash.com/photo-1528164344705-47542686040c?w=1200&q=80&auto=format&fit=crop',
-    imageAlt: 'Tokyo station and city rhythm — where millions trade skill and time every day',
+    imageKey: 'vocation',
     align: 'left' as const,
     accent: 'from-brand-navy/15 to-brand-pink/20',
   },
@@ -99,9 +94,7 @@ const sections = [
     students:
       'Internships, apprenticeships, competition entries, GitHub portfolios, clinical hours, performance recordings, leadership roles with measurable outcomes.',
     prompt: 'What do people thank you for repeatedly — and what proof could you show a stranger in five minutes?',
-    image:
-      'https://images.unsplash.com/photo-1583583853713-9d5b7bb4e8cb?w=1200&q=80&auto=format&fit=crop',
-    imageAlt: 'Tokyo skyline through glass — craft, commute, and the long arc of a career',
+    imageKey: 'profession',
     align: 'right' as const,
     accent: 'from-brand-plum/10 to-brand-pink-2/20',
   },
@@ -109,26 +102,25 @@ const sections = [
 
 function IkigaiDiagramMini() {
   return (
-    <svg viewBox="0 0 400 380" className="w-full max-w-md mx-auto h-auto" aria-hidden>
-      {/* Four overlapping circles — schematic */}
-      <circle cx="155" cy="145" r="95" fill="rgba(255,141,161,0.12)" stroke="rgba(255,141,161,0.45)" strokeWidth="1.5" />
-      <circle cx="245" cy="145" r="95" fill="rgba(45,27,34,0.06)" stroke="rgba(45,27,34,0.2)" strokeWidth="1.5" />
-      <circle cx="155" cy="235" r="95" fill="rgba(255,183,197,0.1)" stroke="rgba(255,183,197,0.35)" strokeWidth="1.5" />
-      <circle cx="245" cy="235" r="95" fill="rgba(255,141,161,0.08)" stroke="rgba(255,141,161,0.3)" strokeWidth="1.5" />
-      <text x="200" y="128" textAnchor="middle" className="fill-brand-plum text-[11px] font-sans font-medium" style={{ fontSize: '11px' }}>
+    <svg viewBox="0 0 400 380" className="w-full max-w-lg mx-auto h-auto" aria-hidden>
+      <circle cx="155" cy="145" r="95" fill="rgba(255,141,161,0.14)" stroke="rgba(255,141,161,0.5)" strokeWidth="2" />
+      <circle cx="245" cy="145" r="95" fill="rgba(45,27,34,0.08)" stroke="rgba(45,27,34,0.28)" strokeWidth="2" />
+      <circle cx="155" cy="235" r="95" fill="rgba(255,183,197,0.14)" stroke="rgba(255,183,197,0.4)" strokeWidth="2" />
+      <circle cx="245" cy="235" r="95" fill="rgba(255,141,161,0.1)" stroke="rgba(255,141,161,0.35)" strokeWidth="2" />
+      <text x="200" y="124" textAnchor="middle" fill="#2D1B22" style={{ fontSize: '13px', fontWeight: 600 }}>
         Passion
       </text>
-      <text x="118" y="198" textAnchor="middle" className="fill-brand-plum text-[11px] font-sans font-medium" style={{ fontSize: '11px' }}>
+      <text x="118" y="198" textAnchor="middle" fill="#2D1B22" style={{ fontSize: '13px', fontWeight: 600 }}>
         Mission
       </text>
-      <text x="282" y="198" textAnchor="middle" className="fill-brand-plum text-[11px] font-sans font-medium" style={{ fontSize: '11px' }}>
+      <text x="282" y="198" textAnchor="middle" fill="#2D1B22" style={{ fontSize: '13px', fontWeight: 600 }}>
         Vocation
       </text>
-      <text x="200" y="268" textAnchor="middle" className="fill-brand-plum text-[11px] font-sans font-medium" style={{ fontSize: '11px' }}>
+      <text x="200" y="272" textAnchor="middle" fill="#2D1B22" style={{ fontSize: '13px', fontWeight: 600 }}>
         Profession
       </text>
-      <text x="200" y="198" textAnchor="middle" className="fill-brand-plum/80 text-[9px] font-sans" style={{ fontSize: '9px' }}>
-        ikigai
+      <text x="200" y="198" textAnchor="middle" fill="rgba(45,27,34,0.75)" style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em' }}>
+        IKIGAI
       </text>
     </svg>
   )
@@ -139,159 +131,136 @@ export default function IkigaiExplainer() {
 
   return (
     <div className="min-h-screen bg-brand-cream text-brand-plum overflow-x-hidden">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-brand-cream/85 backdrop-blur-xl border-b border-brand-pink/15">
-        <div className="max-w-5xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
-          <Link href="/" className="text-sm font-medium text-brand-plum/70 hover:text-brand-plum transition-colors">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-brand-cream/90 backdrop-blur-xl border-b border-brand-pink/15">
+        <div className="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
+          <Link href="/" className="text-sm font-semibold text-brand-plum/70 hover:text-brand-plum transition-colors">
             ← Home
           </Link>
           <Link
             href="/#action"
-            className="text-xs font-semibold rounded-full bg-brand-plum text-brand-pink px-4 py-2 hover:bg-brand-plum-2 transition-colors"
+            className="text-xs font-bold rounded-full bg-brand-plum text-brand-pink px-4 py-2.5 hover:bg-brand-plum-2 transition-colors shadow-md"
           >
             Find your Ikigai
           </Link>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative pt-28 pb-16 md:pt-36 md:pb-20 px-5">
-        <motion.div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden" initial={false}>
-          <motion.div
-            className="absolute -top-32 right-[-20%] w-[70vw] max-w-xl h-[70vw] max-h-xl rounded-full bg-gradient-to-br from-brand-pink/40 via-brand-pink/10 to-transparent blur-3xl"
-            animate={reduceMotion ? {} : { scale: [1, 1.06, 1], opacity: [0.5, 0.75, 0.5] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+      {/* Hero — full-bleed imagery */}
+      <section className="relative min-h-[min(88vh,920px)] flex flex-col">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={ikigaiExplainerImages.hero.src}
+            alt={ikigaiExplainerImages.hero.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[center_42%]"
           />
-          <motion.div
-            className="absolute bottom-0 left-[-15%] w-[55vw] max-w-md h-[55vw] max-h-md rounded-full bg-gradient-to-tr from-brand-plum/8 to-brand-pink/25 blur-3xl"
-            animate={reduceMotion ? {} : { y: [0, 18, 0], opacity: [0.35, 0.55, 0.35] }}
-            transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </motion.div>
-
-        <div className="relative max-w-3xl mx-auto text-center">
-          <motion.p
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="capsule-tag justify-center"
-          >
-            From Japan — for your path
-          </motion.p>
-          <motion.h1
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="text-3xl sm:text-4xl md:text-[2.75rem] font-serif italic text-brand-plum leading-tight mb-5"
-          >
-            Ikigai is your reason to rise — where what you love, what you excel at, what the world
-            needs, and what can sustain you quietly meet.
-          </motion.h1>
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="text-brand-plum/65 text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
-          >
-            If you are a student, think of this page as a map, not a test. The Japanese idea of{' '}
-            <em className="text-brand-plum not-italic font-medium">ikigai</em> (生き甲斐) is often
-            translated as “a life worth living” — a sense of purpose you can grow in small, honest
-            steps, not a single label you must discover overnight.
-          </motion.p>
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-plum/88 via-brand-plum/45 to-brand-cream" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,183,197,0.15),_transparent_55%)]" />
         </div>
 
-        <motion.div
-          className="relative max-w-2xl mx-auto mt-12 md:mt-16"
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.35, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="relative aspect-[4/3] md:aspect-[16/10] rounded-[2rem] overflow-hidden shadow-[0_24px_80px_rgba(45,27,34,0.14)] ring-1 ring-brand-pink/25">
-            <Image
-              src="https://images.unsplash.com/photo-1490806843927-4cdcbe499a3d?w=1200&q=80&auto=format&fit=crop"
-              alt="Mount Fuji above clouds at sunrise — Japan’s iconic horizon, a metaphor for clarity emerging slowly"
-              fill
-              className="object-cover object-[center_40%]"
-              sizes="(max-width: 768px) 100vw, 672px"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-plum/55 via-brand-plum/10 to-transparent" />
-            <p className="absolute bottom-6 left-6 right-6 md:bottom-8 md:left-8 md:right-8 text-white/95 text-sm md:text-base font-serif italic leading-snug drop-shadow-md">
-              In Japan, purpose is not only ambition in a hurry — it can look like showing up well,
-              season after season, until your life and your values start to rhyme.
-            </p>
+        <div className="relative z-10 flex flex-col flex-grow justify-center px-5 pt-28 pb-16 md:pt-36 md:pb-20">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.p
+              custom={0}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="inline-flex items-center justify-center px-5 py-2 rounded-full border border-white/25 bg-white/10 text-[10px] uppercase tracking-[0.4em] font-bold text-brand-pink mb-8 backdrop-blur-md"
+            >
+              From Japan — for your path
+            </motion.p>
+            <motion.h1
+              custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-[3.35rem] font-serif italic text-white leading-[1.08] mb-6 drop-shadow-[0_4px_32px_rgba(0,0,0,0.35)]"
+            >
+              Ikigai is your reason to rise — where love, mastery, need, and livelihood meet.
+            </motion.h1>
+            <motion.p
+              custom={2}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="text-white/92 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-md"
+            >
+              A student-friendly map: the Japanese idea of{' '}
+              <em className="text-white not-italic font-serif">ikigai</em> (生き甲斐) points toward a life
+              that feels worth living — built in small, honest steps.
+            </motion.p>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Japan roots */}
-      <section className="relative py-16 md:py-24 px-5 border-y border-brand-pink/15 bg-white/40 sakura-pattern">
-        <div className="max-w-3xl mx-auto">
+      <section className="relative py-16 md:py-28 px-5 border-y border-brand-pink/15 bg-white/50 sakura-pattern">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.65 }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <p className="text-[10px] uppercase tracking-[0.35em] text-brand-pink-2 font-bold mb-3">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-brand-pink-2 font-bold mb-3">
               Roots &amp; light
             </p>
-            <h2 className="text-2xl md:text-3xl font-serif italic text-brand-plum mb-4">
+            <h2 className="text-3xl md:text-4xl font-serif italic text-brand-plum mb-5">
               Why Japan keeps returning to this word
             </h2>
-            <p className="text-brand-plum/70 leading-relaxed text-left md:text-center">
-              The word breaks beautifully: <span className="text-brand-plum font-medium">iki</span>{' '}
-              (生き) carries “life” and “to live,” and <span className="text-brand-plum font-medium">gai</span>{' '}
+            <p className="text-brand-plum/75 leading-relaxed text-lg max-w-3xl mx-auto text-left md:text-center">
+              The word breaks beautifully: <span className="text-brand-plum font-semibold">iki</span>{' '}
+              (生き) carries “life” and “to live,” and <span className="text-brand-plum font-semibold">gai</span>{' '}
               (甲斐) suggests value, worth, or what makes something worthwhile. Together,{' '}
-              <em className="font-serif not-italic">ikigai</em> is less about a LinkedIn title and
-              more about the daily sense that your hours matter — to you and to someone else.
+              <em className="font-serif not-italic">ikigai</em> is less about a LinkedIn title and more
+              about the daily sense that your hours matter — to you and to someone else.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-start">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-start">
             <motion.div
-              className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg ring-1 ring-brand-pink/20"
+              className="relative w-full aspect-[16/11] md:min-h-[340px] rounded-[1.75rem] overflow-hidden shadow-[0_28px_80px_rgba(45,27,34,0.18)] ring-2 ring-white/80"
               initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.65 }}
             >
               <Image
-                src="https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1000&q=80&auto=format&fit=crop"
-                alt="Cherry blossoms along a river in Japan — mono no aware, the gentle awareness of impermanence"
+                src={ikigaiExplainerImages.roots.src}
+                alt={ikigaiExplainerImages.roots.alt}
                 fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 400px"
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand-plum/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-brand-plum/35 via-transparent to-transparent" />
             </motion.div>
             <motion.div
-              className="space-y-4 text-brand-plum/75 leading-relaxed"
+              className="space-y-5 text-brand-plum/80 leading-relaxed text-base md:text-lg"
               initial={{ opacity: 0, x: 16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.65 }}
             >
               <p>
-                You may have heard of <strong className="text-brand-plum font-medium">Okinawa</strong>, where
-                many people live long, socially connected lives. Writers and researchers often talk
-                about <em className="font-serif text-brand-plum/90 not-italic">ikigai</em> alongside
-                community, movement, and eating with care — not as a magic formula, but as a reminder
-                that purpose and belonging feed each other.
+                You may have heard of <strong className="text-brand-plum font-semibold">Okinawa</strong>, where
+                many people live long, socially connected lives. Writers and researchers often talk about{' '}
+                <em className="font-serif text-brand-plum not-italic">ikigai</em> alongside community,
+                movement, and eating with care — not as a magic formula, but as a reminder that purpose and
+                belonging feed each other.
               </p>
               <p>
-                Japanese aesthetics — think of the care in a bowl of tea, the patience in a garden, the
-                rhythm of a neighborhood festival — also whisper the same lesson: meaning is rarely only
-                inside your head. It shows up in how you attend to the world.
+                Japanese aesthetics — the care in a bowl of tea, the patience in a garden, the rhythm of a
+                festival — whisper the same lesson: meaning is rarely only inside your head. It shows up in
+                how you attend to the world.
               </p>
-              <p className="text-brand-plum/60 text-sm border-l-2 border-brand-pink/50 pl-4">
-                This page uses the popular <strong className="text-brand-plum/80">four-circle</strong>{' '}
-                framework (common in Western workshops) to help you study your life in pieces. Japanese
-                scholars and speakers may use <em className="not-italic">ikigai</em> more broadly — treat
-                the diagram as a compass, not a cage.
+              <p className="text-brand-plum/60 text-sm md:text-base border-l-[3px] border-brand-pink pl-5 py-1">
+                This page uses the popular <strong className="text-brand-plum/85">four-circle</strong>{' '}
+                framework (common in Western workshops). Japanese scholars may use{' '}
+                <em className="not-italic">ikigai</em> more broadly — treat the diagram as a compass, not a
+                cage.
               </p>
             </motion.div>
           </div>
@@ -299,29 +268,28 @@ export default function IkigaiExplainer() {
       </section>
 
       {/* Four questions + diagram */}
-      <section className="py-16 md:py-24 px-5">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-16 md:py-28 px-5">
+        <div className="max-w-6xl mx-auto">
           <motion.div
-            className="text-center max-w-2xl mx-auto mb-12"
+            className="text-center max-w-2xl mx-auto mb-14"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-[10px] uppercase tracking-[0.35em] text-brand-pink-2 font-bold mb-3">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-brand-pink-2 font-bold mb-3">
               The map
             </p>
-            <h2 className="text-2xl md:text-3xl font-serif italic text-brand-plum mb-4">
+            <h2 className="text-3xl md:text-4xl font-serif italic text-brand-plum mb-4">
               Four questions — one conversation
             </h2>
-            <p className="text-brand-plum/70 leading-relaxed">
-              Most classes ask what you want to be. Ikigai asks how your loves, skills, cares, and
-              realities can fit together over time. Start anywhere; the edges will start to speak to each
-              other.
+            <p className="text-brand-plum/75 leading-relaxed text-lg">
+              Most classes ask what you want to be. Ikigai asks how your loves, skills, cares, and realities
+              can fit together over time.
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
             <motion.ul
               className="space-y-4"
               initial="hidden"
@@ -329,32 +297,33 @@ export default function IkigaiExplainer() {
               viewport={{ once: true, margin: '-40px' }}
               variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
             >
-              {fourQuestions.map((item, i) => (
+              {fourQuestions.map((item) => (
                 <motion.li
                   key={item.q}
                   variants={{
                     hidden: { opacity: 0, y: 12 },
                     show: { opacity: 1, y: 0, transition: { duration: 0.45 } },
                   }}
-                  className="rounded-2xl bg-white/70 border border-brand-pink/20 px-5 py-4 shadow-sm backdrop-blur-sm"
+                  className="rounded-2xl bg-white/80 border-2 border-brand-pink/25 px-6 py-5 shadow-md backdrop-blur-sm"
                 >
-                  <p className="font-serif italic text-lg text-brand-plum">{item.q}</p>
-                  <p className="text-sm text-brand-plum/55 mt-1">{item.hint}</p>
+                  <p className="font-serif italic text-xl text-brand-plum">{item.q}</p>
+                  <p className="text-sm md:text-base text-brand-plum/55 mt-2">{item.hint}</p>
                 </motion.li>
               ))}
             </motion.ul>
             <motion.div
-              className="rounded-3xl bg-white/50 border border-brand-pink/15 p-6 md:p-8 shadow-inner"
+              className="rounded-[2rem] bg-white/60 border-2 border-brand-pink/20 p-8 md:p-10 shadow-inner"
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55 }}
             >
               <IkigaiDiagramMini />
-              <p className="text-center text-xs text-brand-plum/50 mt-4 max-w-sm mx-auto leading-relaxed">
-                Where two circles overlap, you get Passion, Mission, Vocation, or Profession. Where all
-                four meet — in the center — many people place the feeling of <em className="not-italic text-brand-plum/70">ikigai</em>: a life
-                that feels worth living, in the round.
+              <p className="text-center text-sm text-brand-plum/55 mt-6 max-w-md mx-auto leading-relaxed">
+                Where two circles overlap, you get Passion, Mission, Vocation, or Profession. Where all four
+                meet — in the center — many people place the feeling of{' '}
+                <em className="not-italic text-brand-plum/80 font-semibold">ikigai</em>: a life that feels
+                worth living, in the round.
               </p>
             </motion.div>
           </div>
@@ -362,146 +331,150 @@ export default function IkigaiExplainer() {
       </section>
 
       {/* Four intersections — in depth */}
-      <div className="max-w-5xl mx-auto px-5 pb-8 space-y-24 md:space-y-32">
-        {sections.map((s, idx) => (
-          <motion.article
-            key={s.key}
-            className={`flex flex-col gap-10 md:gap-14 md:flex-row md:items-stretch ${
-              s.align === 'right' ? 'md:flex-row-reverse' : ''
-            }`}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: '-80px' }}
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.1 } },
-            }}
-          >
-            <motion.div
-              className="flex-1 relative min-h-[220px] md:min-h-0"
+      <div className="max-w-6xl mx-auto px-5 pb-10 space-y-28 md:space-y-36">
+        {sections.map((s, idx) => {
+          const { src, alt } = ikigaiExplainerImages[s.imageKey]
+
+          return (
+            <motion.article
+              key={s.key}
+              className={`flex flex-col gap-12 md:gap-16 md:flex-row md:items-stretch ${
+                s.align === 'right' ? 'md:flex-row-reverse' : ''
+              }`}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: '-80px' }}
               variants={{
-                hidden: { opacity: 0, x: s.align === 'left' ? -28 : 28 },
-                show: {
-                  opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-                },
+                hidden: {},
+                show: { transition: { staggerChildren: 0.1 } },
               }}
             >
-              <div
-                className={`relative h-full min-h-[220px] md:min-h-[320px] rounded-3xl overflow-hidden shadow-xl ring-1 ring-brand-pink/20 bg-gradient-to-br ${s.accent}`}
+              <motion.div
+                className="flex-1 relative w-full min-h-[280px] md:min-h-[400px]"
+                variants={{
+                  hidden: { opacity: 0, x: s.align === 'left' ? -28 : 28 },
+                  show: {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+                  },
+                }}
               >
-                <Image
-                  src={s.image}
-                  alt={s.imageAlt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 45vw"
+                <div
+                  className={`relative h-full min-h-[280px] md:min-h-[400px] rounded-[2rem] overflow-hidden shadow-[0_28px_90px_rgba(45,27,34,0.2)] ring-2 ring-white/70 bg-gradient-to-br ${s.accent}`}
+                >
+                  <Image
+                    src={src}
+                    alt={alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 48vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-plum/55 via-brand-plum/5 to-transparent pointer-events-none" />
+                  <p className="absolute bottom-5 left-5 right-5 text-white text-sm md:text-base font-bold tracking-wide drop-shadow-lg">
+                    {s.jpHint}
+                  </p>
+                </div>
+                <motion.span
+                  className="absolute -z-10 w-52 h-52 rounded-full bg-brand-pink/30 blur-3xl -bottom-12 -right-8"
+                  animate={reduceMotion ? {} : { scale: [1, 1.12, 1] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.4 }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-plum/40 via-transparent to-transparent pointer-events-none" />
-                <p className="absolute bottom-4 left-4 right-4 text-white/90 text-xs font-medium tracking-wide drop-shadow">
-                  {s.jpHint}
-                </p>
-              </div>
-              <motion.span
-                className="absolute -z-10 w-44 h-44 rounded-full bg-brand-pink/25 blur-2xl -bottom-10 -right-6"
-                animate={reduceMotion ? {} : { scale: [1, 1.12, 1] }}
-                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.4 }}
-              />
-            </motion.div>
+              </motion.div>
 
-            <motion.div
-              className="flex-1 flex flex-col justify-center"
-              variants={{
-                hidden: { opacity: 0, y: 22 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
-              }}
-            >
-              <p className="text-[10px] uppercase tracking-[0.35em] text-brand-pink-2 font-bold mb-2">
-                {String(idx + 1).padStart(2, '0')} — {s.subtitle}
-              </p>
-              <h2 className="text-3xl md:text-4xl font-serif italic text-brand-plum mb-3">{s.title}</h2>
-              <p className="text-brand-plum/85 leading-relaxed mb-3">{s.lead}</p>
-              <p className="text-brand-plum/65 leading-relaxed mb-6">{s.body}</p>
-
-              <div className="rounded-2xl bg-brand-cream-2/90 border border-brand-pink/25 px-5 py-4 mb-5">
-                <p className="text-[10px] uppercase tracking-[0.25em] text-brand-plum/45 font-bold mb-2">
-                  For students
+              <motion.div
+                className="flex-1 flex flex-col justify-center"
+                variants={{
+                  hidden: { opacity: 0, y: 22 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+                }}
+              >
+                <p className="text-[10px] uppercase tracking-[0.4em] text-brand-pink-2 font-bold mb-2">
+                  {String(idx + 1).padStart(2, '0')} — {s.subtitle}
                 </p>
-                <p className="text-sm text-brand-plum/75 leading-relaxed">{s.students}</p>
-              </div>
+                <h2 className="text-4xl md:text-5xl font-serif italic text-brand-plum mb-4">{s.title}</h2>
+                <p className="text-brand-plum/90 leading-relaxed text-lg mb-4">{s.lead}</p>
+                <p className="text-brand-plum/70 leading-relaxed text-base md:text-lg mb-8">{s.body}</p>
 
-              <div className="rounded-2xl border border-dashed border-brand-plum/20 bg-white/40 px-5 py-4">
-                <p className="text-[10px] uppercase tracking-[0.25em] text-brand-pink-2 font-bold mb-1.5">
-                  Try asking
-                </p>
-                <p className="text-brand-plum/80 font-serif italic text-lg leading-snug">{s.prompt}</p>
-              </div>
-            </motion.div>
-          </motion.article>
-        ))}
+                <div className="rounded-2xl bg-brand-cream-2/95 border-2 border-brand-pink/30 px-6 py-5 mb-6">
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-brand-plum/45 font-bold mb-2">
+                    For students
+                  </p>
+                  <p className="text-sm md:text-base text-brand-plum/80 leading-relaxed">{s.students}</p>
+                </div>
+
+                <div className="rounded-2xl border-2 border-dashed border-brand-plum/25 bg-white/50 px-6 py-5">
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-brand-pink-2 font-bold mb-2">
+                    Try asking
+                  </p>
+                  <p className="text-brand-plum font-serif italic text-xl md:text-2xl leading-snug">{s.prompt}</p>
+                </div>
+              </motion.div>
+            </motion.article>
+          )
+        })}
       </div>
 
-      {/* Center + bamboo */}
-      <section className="py-16 md:py-20 px-5">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+      {/* Center + image */}
+      <section className="py-16 md:py-24 px-5">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div
-            className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-xl ring-1 ring-brand-pink/20 order-2 md:order-1"
+            className="relative w-full aspect-[16/11] md:min-h-[420px] rounded-[2rem] overflow-hidden shadow-[0_28px_90px_rgba(45,27,34,0.18)] ring-2 ring-white/80 order-2 md:order-1"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.65 }}
           >
             <Image
-              src="https://images.unsplash.com/photo-1578469559606-135d7db21a79?w=1100&q=80&auto=format&fit=crop"
-              alt="Bamboo forest path in Arashiyama — steady growth, patience, returning to the same practice"
+              src={ikigaiExplainerImages.center.src}
+              alt={ikigaiExplainerImages.center.alt}
               fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 480px"
+              className="object-cover object-[center_35%]"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-plum/25 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-plum/35 to-transparent" />
           </motion.div>
           <motion.div
-            className="order-1 md:order-2 space-y-4"
+            className="order-1 md:order-2 space-y-5"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.65, delay: 0.05 }}
           >
-            <p className="text-[10px] uppercase tracking-[0.35em] text-brand-pink-2 font-bold">The center</p>
-            <h2 className="text-2xl md:text-3xl font-serif italic text-brand-plum">The still point is practice</h2>
-            <p className="text-brand-plum/70 leading-relaxed">
-              When people describe finding <em className="font-serif not-italic text-brand-plum/85">ikigai</em>, they
-              often mention neither fame nor speed — but alignment. The center of the diagram is not a job
-              title you must decode at eighteen. It is a felt sense that your days, your relationships,
-              and your contribution lean in the same direction.
+            <p className="text-[10px] uppercase tracking-[0.4em] text-brand-pink-2 font-bold">The center</p>
+            <h2 className="text-3xl md:text-4xl font-serif italic text-brand-plum">The still point is practice</h2>
+            <p className="text-brand-plum/75 leading-relaxed text-base md:text-lg">
+              When people describe finding <em className="font-serif not-italic text-brand-plum/90">ikigai</em>, they
+              often mention neither fame nor speed — but alignment. The center of the diagram is not a job title
+              you must decode at eighteen. It is a felt sense that your days, your relationships, and your
+              contribution lean in the same direction.
             </p>
-            <p className="text-brand-plum/70 leading-relaxed">
-              In Japanese culture, long-cultivated arts — calligraphy, archery, tea — teach that mastery
-              is a relationship with time. Your ikigai may emerge the same way: through repetition,
-              honest feedback, and small courages, not one dramatic announcement.
+            <p className="text-brand-plum/75 leading-relaxed text-base md:text-lg">
+              In Japanese culture, long-cultivated arts — calligraphy, archery, tea — teach that mastery is a
+              relationship with time. Your ikigai may emerge the same way: through repetition, honest feedback,
+              and small courages, not one dramatic announcement.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* How to use */}
-      <section className="py-14 md:py-20 px-5 bg-gradient-to-b from-brand-cream to-brand-cream-2 border-t border-brand-pink/15">
+      <section className="py-16 md:py-24 px-5 bg-gradient-to-b from-brand-cream to-brand-cream-2 border-t border-brand-pink/15">
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55 }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <p className="text-[10px] uppercase tracking-[0.35em] text-brand-pink-2 font-bold mb-3">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-brand-pink-2 font-bold mb-3">
               Use it well
             </p>
-            <h2 className="text-2xl md:text-3xl font-serif italic text-brand-plum mb-3">
+            <h2 className="text-3xl md:text-4xl font-serif italic text-brand-plum mb-3">
               How to work with this as a student
             </h2>
-            <p className="text-brand-plum/65 leading-relaxed">
+            <p className="text-brand-plum/65 leading-relaxed text-lg">
               Depth beats drama. Borrow one habit from Japanese craft culture: show up, notice, adjust.
             </p>
           </motion.div>
@@ -525,12 +498,12 @@ export default function IkigaiExplainer() {
                   hidden: { opacity: 0, x: -10 },
                   show: { opacity: 1, x: 0, transition: { duration: 0.4 } },
                 }}
-                className="flex gap-3 items-start rounded-2xl bg-white/70 border border-brand-pink/15 px-5 py-4"
+                className="flex gap-4 items-start rounded-2xl bg-white/80 border-2 border-brand-pink/15 px-6 py-4 shadow-sm"
               >
-                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-brand-pink/25 text-brand-plum text-xs font-bold flex items-center justify-center mt-0.5">
+                <span className="flex-shrink-0 w-9 h-9 rounded-full bg-brand-pink/30 text-brand-plum text-sm font-bold flex items-center justify-center mt-0.5">
                   {i + 1}
                 </span>
-                <span className="text-brand-plum/75 leading-relaxed">{line}</span>
+                <span className="text-brand-plum/80 leading-relaxed text-base">{line}</span>
               </motion.li>
             ))}
           </motion.ul>
@@ -539,22 +512,21 @@ export default function IkigaiExplainer() {
 
       {/* Closing + CTA */}
       <motion.section
-        className="relative px-5 pb-28 pt-4"
+        className="relative px-5 pb-28 pt-6"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
       >
-        <div className="max-w-2xl mx-auto text-center rounded-[2rem] bg-white/60 backdrop-blur-xl border border-brand-pink/25 px-8 py-12 shadow-[0_20px_60px_rgba(255,183,197,0.15)]">
-          <h3 className="text-2xl md:text-3xl font-serif italic text-brand-plum mb-4">
+        <div className="max-w-2xl mx-auto text-center rounded-[2rem] bg-white/70 backdrop-blur-xl border-2 border-brand-pink/25 px-8 py-14 shadow-[0_24px_70px_rgba(255,183,197,0.2)]">
+          <h3 className="text-3xl md:text-4xl font-serif italic text-brand-plum mb-4">
             Walk it with someone who listens
           </h3>
-          <p className="text-brand-plum/65 mb-8 leading-relaxed">
-            The tool on this site is a conversation — question by question — so your story can surface in
-            its own time. Bring your doubts; they belong in the room. Ikigai, after all, is not a poster.
-            It is a practice of living as if your days count.
+          <p className="text-brand-plum/65 mb-10 leading-relaxed text-lg">
+            The tool on this site is a conversation — question by question — so your story can surface in its
+            own time. Bring your doubts; they belong in the room.
           </p>
-          <Link href="/#action" className="btn-primary inline-flex">
+          <Link href="/#action" className="btn-primary inline-flex text-base px-10 py-3.5 font-semibold">
             Begin the journey
           </Link>
         </div>
